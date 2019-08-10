@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>RolePlan: Charachters Page</title>
+    <title>RolePlan: NPC Page</title>
 </head>
 
 <body>
@@ -23,10 +23,13 @@
         </div>
         <div class="row">
             <div class="col mh-100"> 
-                <button id="npc-button" class="shadow-lg align-middle rounded"><i class="fas fa-globe"></i> Gestione NPC</button>
+                <button id="npc-button" class="shadow-lg align-middle rounded"><i class="fas fa-tasks"></i> Inserimento NPC</button>
             </div>
             <div class="col">
-                <button id="pg-button" class="shadow-lg align-middle rounded"><i class="fas fa-user-cog"></i> Gestione PG</button>
+                <button id="interest-button" class="shadow-lg align-middle rounded"><i class="fas fa-search-dollar"></i> Modifica Interessi</button>
+            </div>
+            <div class="col">
+                <button id="work-button" class="shadow-lg align-middle rounded"><i class="fas fa-briefcase"></i> Modifica Occupazioni</button>
             </div>
         </div>
     </div>
@@ -37,10 +40,13 @@
 <script>
 $(document).ready(function(){
     $("#npc-button").click(function(){
-        window.location = "npcmenu.php"
+        window.location = "npcmanage.php"
     })
-    $("#pg-button").click(function(){
-        window.location = "pgmanage.php"
+    $("#interest-button").click(function(){
+        window.location = "interestmanage.php"
+    })
+    $("#work-button").click(function(){
+        window.location = "workmanage.php"
     })
 })
 </script>
