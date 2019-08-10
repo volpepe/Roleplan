@@ -1,0 +1,18 @@
+.master-side{
+    float: left;
+    width: 49%;
+    text-align: center;
+    margin-right: 2%;
+}
+
+.player-side{
+    float: left;
+    width: 49%;
+    text-align: center
+}
+
+button{
+    height: 20em;
+    width: 20em;
+    font-size: 40px;
+}
