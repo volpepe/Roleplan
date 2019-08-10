@@ -1,0 +1,79 @@
+.col{
+    text-align: center;
+    height: 100%;
+}
+
+.jumbotron{
+    width: 100%;
+    margin-bottom: 10%;
+    overflow: auto;
+    padding: 20px;
+}
+
+.jumbotron p{
+    text-align: center;
+    vertical-align: middle;
+    font-size: 35px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+i{
+    display: block;
+    font-size: 60px;
+    width: 100%;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid white;
+}
+
+button{
+    width: 80%;
+    background-color:rgb(65, 65, 204);
+    padding: 5%;
+    border: 5px black;
+    color: white;
+    font-size: 30px;
+    transition: all 0.2s;
+}
+
+button:hover{
+    font-size: 35px;
+}
+
+@media only screen and (max-width: 850px) {
+    button{
+        font-size: 20px;
+    }
+
+    button:hover{
+        font-size: 25px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    button{
+        font-size: 15px;
+    }
+
+    button:hover{
+        font-size:18px;
+    }
+
+    .jumbotron{
+        font-size: 20px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    button{
+        font-size: 10px;
+    }
+
+    button:hover{
+        font-size:14px;
+    }
+
+    .jumbotron{
+        font-size: 15px;
+    }
+}
