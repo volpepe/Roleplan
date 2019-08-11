@@ -1,3 +1,21 @@
 .jumbotron{
     margin-bottom: 20px;
 }
+
+.form-group{
+    width: 50%;
+    margin-left: 25%;
+}
+
+.dec{
+    width: 12.5%;
+    margin: 20px 12.5%;
+}
+
+button:hover{
+    font-size: initial !important;
+}
+
+form{
+    text-align: center;
+}

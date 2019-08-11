@@ -1,3 +1,17 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$db = "roleplan";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $db);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection to database failed: " . $conn->connect_error);
+} 
+?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -13,7 +27,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>RolePlan: Area Adding Page</title>
 </head>
-
 <body>
     <div class="container-fluid">
         <div class="jumbotron jumbotron-fluid">
@@ -23,19 +36,31 @@
             </div>
         </div>
         <form>
-            <div class="container ">
+            <div class="container">
                 <div class="form-group">
-                    <label for="areaName">Nome Area: </label> <input type="text" name="areaName" id="areaName">
+                    <label for="areaName">Nome Area: </label> 
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="areaName" id="areaName">
                 </div>
                 <label for="areaDesc">Descrizione Area: </label> 
                 <div class="form-group">
-                    <textarea name="areaDesc" id="areaDesc" cols="60" rows="5"></textarea>
+                    <textarea name="areaDesc" class="form-control" id="areaDesc" cols="60" rows="5"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="classArea">Tipo di Area: </label>
                     <select name="classArea" id="classArea" class="custom-select">
-                        <option selected></option>
-                        <option value=""></option>
+                    <?php
+                        $sql = "SELECT NomeTipo, IDTipoArea FROM tipi_aree";
+                        $result=mysqli_query($conn, $sql);
+                        $first = true;
+                        while ($row = mysqli_fetch_assoc($result))
+                        {
+                            $text = $first?"selected":"";
+                            echo "<option value='" . $row["IDTipoArea"] . "' " . $text . ">" . $row["NomeTipo"] . "</option>";
+                            $first=false;
+                        }
+                    ?>
                     </select>
                 </div>
                 <div class="form-group">
@@ -45,14 +70,15 @@
                         <option value=""></option>
                     </select>
                 </div>
-                <button class="btn btn-primary" id="sendButton">Conferma</button>
-                <button class="btn btn-danger" id="removeButton">Annulla</button>
+                <button class="btn btn-primary dec" id="sendButton">Conferma</button>
+                <button class="btn btn-danger dec" id="removeButton">Annulla</button>
             </div>
-        </form>
-        
+        </form>  
     </div>
 </body>
-
+<?php
+$conn->close();
+?>
 </html>
 
 <script>
