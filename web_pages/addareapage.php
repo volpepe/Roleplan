@@ -101,10 +101,7 @@ $(document).ready(function(){
     })
     $("#sendButton").click(function(e){
         e.preventDefault();
-        var areaAds = [];
-        $.each($("#closeAreas:selected"), function(){
-            areaAds.push($(this).val())
-        })
+        var areaAds = $("#closeAreas").val();
         console.log(areaAds)
         if($("#areaName").val().length > 0 && $("#areaDesc").val().length > 0 && $("#classArea").val().length > 0)
         {

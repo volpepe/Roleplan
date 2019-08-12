@@ -31,7 +31,6 @@ switch ($_POST["operation"]) {
         do_query($sql);
         $sql = "INSERT INTO class_aree(TipoArea, Mondo, Area) VALUES (" . $_POST["areaType"] . ", " . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ")";
         do_query($sql);
-        print_r($array);
         foreach ($array as $ad_ar) {
             $sql = "INSERT INTO adiacenze(MondoArea, Area, AdiacenteAMondo, AdiacenteAdArea)
             VALUES (" . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ", " . $_POST["areaWorld"] . ", " . $ad_ar . ")";
