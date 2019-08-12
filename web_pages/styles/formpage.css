@@ -12,6 +12,10 @@
     margin: 20px 12.5%;
 }
 
+button{
+    word-break: break-all;
+}
+
 button:hover{
     font-size: initial !important;
 }
