@@ -10,7 +10,11 @@ $conn = new mysqli($servername, $username, $password, $db);
 // Check connection
 if ($conn->connect_error) {
     die("Connection to database failed: " . $conn->connect_error);
-} 
+}
+
+if(!isset($_GET["WORLD"])){
+    echo "Non si può aggiungere un'area senza indicarne il mondo di provenienza.";
+} else {
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -66,8 +70,17 @@ if ($conn->connect_error) {
                 <div class="form-group">
                     <label for="closeAreas">Adiacenze (premi ctrl, shift o trascina col mouse per selezionare più Aree): </label>
                     <select multiple name="closeAreas" id="closeArea" class="custom-select">
-                        <option selected></option>
-                        <option value=""></option>
+                    <?php
+                        $sql = "SELECT NomeArea, IDArea FROM aree WHERE Mondo = " . $_GET["WORLD"];
+                        $result=mysqli_query($conn, $sql);
+                        $first = true;
+                        while ($row = mysqli_fetch_assoc($result))
+                        {
+                            $text = $first?"selected":"";
+                            echo "<option value='" . $row["IDArea"] . "' " . $text . ">" . $row["NomeArea"] . "</option>";
+                            $first=false;
+                        }
+                    ?>
                     </select>
                 </div>
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
@@ -76,13 +89,43 @@ if ($conn->connect_error) {
         </form>  
     </div>
 </body>
-<?php
-$conn->close();
-?>
+
 </html>
 
 <script>
 $(document).ready(function(){
-
+    $("#removeButton").click(function(e){
+        e.preventDefault();
+        window.location = "planmenu.php";
+    })
+    $("#sendButton").click(function(e){
+        e.preventDefault();
+        $(this).attr("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "operationsAPI.php",
+            data: {
+                operation: "addArea",
+                areaWorld: "<?php echo $_GET["WORLD"];?>",
+                areaName: $("#areaName").val(),
+                areaDesc: $("#areaDesc").val(),
+                areaID: <?php
+                    $sql = "SELECT MAX(IDArea) AS LastID FROM aree WHERE Mondo = " . $_GET["WORLD"];
+                    $result=mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result);
+                    if ($row["LastID"]) echo $row["LastID"] + 1; echo 0; 
+                ?>
+            },
+            success: function(data){
+                window.location = "planmenu.php";
+                alert("Operation completed succesfully! Data: " + data)
+            },
+        });
+    })
 })
 </script>
+
+<?php
+$conn->close();
+}
+?>

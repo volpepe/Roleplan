@@ -19,3 +19,10 @@ button:hover{
 form{
     text-align: center;
 }
+
+.worldchoose{
+    width: 60%;
+    font-size: 17px;
+    padding: 15px;
+    margin: 20px 0;
+}
