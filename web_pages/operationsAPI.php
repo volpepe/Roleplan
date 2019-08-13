@@ -32,11 +32,11 @@ switch ($_POST["operation"]) {
         $sql = "INSERT INTO class_aree(TipoArea, Mondo, Area) VALUES (" . $_POST["areaType"] . ", " . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ")";
         do_query($sql);
         foreach ($array as $ad_ar) {
-            $sql = "INSERT INTO adiacenze(MondoArea, Area, AdiacenteAMondo, AdiacenteAdArea)
-            VALUES (" . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ", " . $_POST["areaWorld"] . ", " . $ad_ar . ")";
+            $sql = "INSERT INTO adiacenze(Mondo, Area, AdiacenteAdArea)
+            VALUES (" . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ", " . $ad_ar . ")";
             do_query($sql);
-            $sql = "INSERT INTO adiacenze(MondoArea, Area, AdiacenteAMondo, AdiacenteAdArea)
-            VALUES (" . $_POST["areaWorld"] . ", " . $ad_ar . ", " . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ")";
+            $sql = "INSERT INTO adiacenze(Mondo, Area, AdiacenteAdArea)
+            VALUES (" . $_POST["areaWorld"] . ", " . $ad_ar . ", " . $_POST["areaID"] . ")";
             do_query($sql);
         }
         break;

@@ -77,15 +77,14 @@ CREATE TABLE Class_Aree(
 );
 
 CREATE TABLE Adiacenze(
-     MondoArea INT NOT NULL,
+     Mondo INT NOT NULL,
      Area INT NOT NULL,
-     AdiacenteAMondo INT NOT NULL,
      AdiacenteAdArea INT NOT NULL,
-     PRIMARY KEY(MondoArea, Area, AdiacenteAMondo, AdiacenteAdArea),
-     FOREIGN KEY(AdiacenteAMondo, AdiacenteAdArea) REFERENCES Aree(Mondo, IDArea)
+     PRIMARY KEY(Mondo, Area, AdiacenteAdArea),
+     FOREIGN KEY(Mondo, AdiacenteAdArea) REFERENCES Aree(Mondo, IDArea)
           ON UPDATE NO ACTION
           ON DELETE CASCADE,
-     FOREIGN KEY(MondoArea, Area) REFERENCES Aree(Mondo, IDArea)
+     FOREIGN KEY(Mondo, Area) REFERENCES Aree(Mondo, IDArea)
           ON UPDATE NO ACTION
           ON DELETE CASCADE
 );
@@ -316,3 +315,9 @@ CREATE TABLE Eliminazioni_Necessarie(
           ON UPDATE NO ACTION
           ON DELETE CASCADE
 );
+
+-- valori di prova per iniziare
+
+INSERT INTO mondi(NomeMondo) VALUES ('Terra di Mezzo'), ('Summer Fields');
+INSERT INTO razze(NomeRazza) VALUES ('Umano'), ('Elfo Scuro');
+INSERT INTO tipi_aree(NomeTipo, Descrizione, EffettiAggiuntivi) VALUES ("Palude", "Un terreno impervio ricoperto di acquitrini e fanghiglie", "Rallenta di molto i personaggi bassi. Può provocare veleno (1d6 ogni turno: 6 = veleno)."), ("Montagna", "Un terreno ricoperto di neve e ricco di rocce.", "Rallenta di molto i personaggi bassi. Può causare problemi di congelamento.");
