@@ -33,7 +33,7 @@
 <script>
 $(document).ready(function(){
     $("#player-button").click(function(){
-        window.location = "playermenu.php"
+        window.location = "worldchoose.php?callback=userpage.php"
     })
     $("#master-button").click(function(){
         window.location = "mastermenu.php"

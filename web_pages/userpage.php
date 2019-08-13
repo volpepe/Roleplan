@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>RolePlan: Charachters Page</title>
+    <title>RolePlan: User Page</title>
 </head>
 
 <body>
@@ -23,10 +23,13 @@
         </div>
         <div class="row">
             <div class="col mh-100"> 
-                <button id="recipe-button" class="shadow-lg align-middle rounded"><i class="fas fa-file-invoice"></i> Inserimento nuova Ricetta</button>
+                <button id="pg-button" class="shadow-lg align-middle rounded"><i class="fas fa-user-cog"></i> Visualizza i dati del tuo PG</button>
             </div>
             <div class="col">
-                <button id="objtype-button" class="shadow-lg align-middle rounded"><i class="fas fa-bullseye"></i> Inserimento nuovo Tipo Oggetto</button>
+                <button id="work-button" class="shadow-lg align-middle rounded"><i class="fas fa-hammer"></i> Ricerca Occupazioni</button>
+            </div>
+            <div class="col">
+                <button id="ingredient-button" class="shadow-lg align-middle rounded"><i class="fas fa-file-invoice"></i> Ricerca Ingredienti per Ricetta</button>
             </div>
         </div>
     </div>
@@ -36,11 +39,14 @@
 
 <script>
 $(document).ready(function(){
-    $("#recipe-button").click(function(){
-        window.location = "addrecipe.php"
+    $("#pg-button").click(function(){
+        window.location = "viewpg.php"
     })
-    $("#objtype-button").click(function(){
-        window.location = "addobjtype.php"
+    $("#work-button").click(function(){
+        window.location = "findjobs.php"
+    })
+    $("#ingredient-button").click(function(){
+        window.location = "findingredients.php"
     })
 })
 </script>
