@@ -23,6 +23,19 @@ function do_query($sql) {
 
 switch ($_POST["operation"]) {
 
+    //M01
+    case 'addRecipe':
+        $sql = "INSERT INTO ricette(OggettoCreato) VALUES ('" . $_POST["toCreate"] . "')";
+        do_query($sql);
+        $recipe = $conn->insert_id;
+        for ($i=1; $i<=4 ; $i++) { 
+            if ($_POST["ing" . $i] > -1) {
+                $sql = "INSERT INTO parte_di(TipoOggetto, Ricetta, Quantita) VALUES(" . $_POST["ing" . $i] . ", " . $recipe .", " . $_POST['q' . $i] . ")";
+                do_query($sql);
+            }
+        }
+        break;
+
     //M02
     case 'addArea':
         $array = json_decode($_POST["areaAdiacences"]);

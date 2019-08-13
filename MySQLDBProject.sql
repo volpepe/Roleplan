@@ -321,3 +321,6 @@ CREATE TABLE Eliminazioni_Necessarie(
 INSERT INTO mondi(NomeMondo) VALUES ('Terra di Mezzo'), ('Summer Fields');
 INSERT INTO razze(NomeRazza) VALUES ('Umano'), ('Elfo Scuro');
 INSERT INTO tipi_aree(NomeTipo, Descrizione, EffettiAggiuntivi) VALUES ("Palude", "Un terreno impervio ricoperto di acquitrini e fanghiglie", "Rallenta di molto i personaggi bassi. Può provocare veleno (1d6 ogni turno: 6 = veleno)."), ("Montagna", "Un terreno ricoperto di neve e ricco di rocce.", "Rallenta di molto i personaggi bassi. Può causare problemi di congelamento.");
+INSERT INTO tipi_oggetto(Nome,Peso,Descrizione,CategoriaOggetto) VALUES    ('Pozione di Ripristino Semplice', 0.1, 'Una semplice pozione che ripristina 30HP', 'pozione'),
+                                                                           ('Salvia Rossa', 0.01, 'Un ingrediente per creare pozioni', 'ingrediente'),
+                                                                           ('Succo di Pomodoro', 0.01, 'Un ingrediente per creare pozioni', 'ingrediente')
