@@ -40,6 +40,12 @@ switch ($_POST["operation"]) {
             do_query($sql);
         }
         break;
+
+    //M04
+    case 'addPG':
+        $sql = "INSERT INTO Personaggi_Giocanti(NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) VALUES('". $_POST["charName"] . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", '" . $_POST["charPlayer"]. "', " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
+        do_query($sql);
+        break;
     
     default:
         echo "no operation";

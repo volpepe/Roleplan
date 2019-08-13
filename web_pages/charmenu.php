@@ -26,7 +26,7 @@
                 <button id="npc-button" class="shadow-lg align-middle rounded"><i class="fas fa-globe"></i> Gestione NPC</button>
             </div>
             <div class="col">
-                <button id="pg-button" class="shadow-lg align-middle rounded"><i class="fas fa-user-cog"></i> Gestione PG</button>
+                <button id="pg-button" class="shadow-lg align-middle rounded"><i class="fas fa-user-cog"></i> Inserimento nuovo PG</button>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@ $(document).ready(function(){
         window.location = "npcmenu.php"
     })
     $("#pg-button").click(function(){
-        window.location = "pgmanage.php"
+        window.location = "worldchoose.php?callback=pgmanage.php"
     })
 })
 </script>
