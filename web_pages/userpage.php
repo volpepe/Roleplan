@@ -40,13 +40,13 @@
 <script>
 $(document).ready(function(){
     $("#pg-button").click(function(){
-        window.location = "viewpg.php"
+        window.location = "viewpg.php?WORLD=<?php echo $_GET["WORLD"];?>";
     })
     $("#work-button").click(function(){
-        window.location = "findjobs.php"
+        window.location = "findjobs.php?WORLD=<?php echo $_GET["WORLD"];?>";
     })
     $("#ingredient-button").click(function(){
-        window.location = "findingredients.php"
+        window.location = "findingredients.php?WORLD=<?php echo $_GET["WORLD"];?>";
     })
 })
 </script>
