@@ -64,9 +64,7 @@ $(document).ready(function(){
     })
     $("#sendButton").click(function(e){
         e.preventDefault();
-        if(true) {
-            $(this).attr("disabled", true);
-            $("removeButton").attr("disabled", true);
+        if($("#pgPlayerName").val().length > 0) {
             $.ajax({
                 type: "POST",
                 url: "operationsAPI.php",

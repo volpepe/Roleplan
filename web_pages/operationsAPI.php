@@ -55,13 +55,14 @@ function print_PG_tabled_info($row) {
                         <th>Nome Oggetto</th>
                         <th>Quantità</th>
                     </tr>';
+
+    /* display inventory*/
     $sql = "CREATE VIEW Inventari_Tot(Personaggio, Nome, Quantita, PesoUnitario, PesoTotale) AS 
                 SELECT i.Personaggio, o.Nome, i.Quantita, o.Peso, o.Peso*i.Quantita AS PesoTotale
                 FROM inventari_pg i, tipi_oggetto o
                 WHERE i.TipoOggetto = o.IDTipoOgg";
     $conn->query($sql);
-    $sql = "SELECT i.* FROM Inventari_Tot i
-            WHERE Personaggio = " . $idPers;
+    $sql = "SELECT i.* FROM Inventari_Tot i WHERE Personaggio = " .$idPers;
     $result = $conn->query($sql);
     while($item = $result->fetch_assoc())
     {
@@ -70,22 +71,37 @@ function print_PG_tabled_info($row) {
                 <td>". $item["Quantita"]."</td>
             </tr>";
     }
-    $sql = "SELECT SUM(i.PesoTotale) AS PesoTrasportato FROM Inventari_Tot i
-            WHERE Personaggio = " . $idPers;
+    $sql = "SELECT SUM(i.PesoTotale) AS PesoTrasportato FROM Inventari_Tot i WHERE Personaggio = " . $idPers;
     $result = $conn->query($sql);
-    $pesoTot = $result->fetch_assoc();
-    echo '<th style="text-align:right; padding: 10px;" colspan=2>Peso totale trasportato: '. $pesoTot["PesoTrasportato"] . '</th>';
-    echo "</table>";
-    /*
-        <h5>Quest in corso:</h5>
-        <ul style="text-align:left">
-            <li>Nome Quest</li>
-        </ul>
+    if ($result != FALSE){  
+        $pesoTot = $result->fetch_assoc();
+        echo '<th style="text-align:right; padding: 10px;" colspan=2>Peso totale trasportato: '. $pesoTot["PesoTrasportato"] . '</th>';
+    } else {
+        echo '<th style="text-align:right; padding: 10px;" colspan=2>Peso totale trasportato: 0.00 </th>';
+    }
+    echo "</table>
+            <h5>Quest in corso:</h5>
+            <ul style='text-align:left'>";
+    $sql = "CREATE VIEW Quest_Tot(Personaggio, Nome, Terminata) AS
+            SELECT p.Personaggio, q.Nome, p.Terminata
+            FROM Quest q, Partecipazioni p
+            WHERE p.Arco = q.Arco
+            AND p.NumQuest = q.NumQuest";
+    $result = $conn->query($sql);
+    $sql = "SELECT Nome FROM Quest_Tot WHERE Personaggio = " .$idPers . " AND Terminata = 0";
+    $result = $conn->query($sql);
+    while($quest = $result->fetch_assoc()) {
+        echo "<li>".$quest['Nome']."</li>";
+    }
+    echo "</ul>
         <h5>Quest terminate:</h5>
-        <ul style="text-align:left" >
-            <li>Nome Quest</li>
-        </ul>';
-    */
+        <ul style='text-align:left' >";
+        $sql = "SELECT Nome FROM Quest_Tot WHERE Personaggio = " .$idPers . " AND Terminata = 1";
+    $result = $conn->query($sql);
+    while($quest = $result->fetch_assoc()) {
+        echo "<li>".$quest['Nome']."</li>";
+    }
+    echo "</ul>";
 }
 
 switch ($_POST["operation"]) {
