@@ -43,10 +43,12 @@ if ($conn->connect_error) {
                 <div class="form-group">
                     <input type="text" class="form-control" name="pgPlayerName" id="pgPlayerName">
                 </div>
-                <div class="results"></div>
                 <div id="errors"></div>
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
                 <button class="btn btn-danger dec" id="removeButton">Annulla</button>
+                <div class="form-group" id="results">
+
+                </div>
             </div>
         </form>  
     </div>
@@ -69,11 +71,12 @@ $(document).ready(function(){
                 type: "POST",
                 url: "operationsAPI.php",
                 data: {
-                    operation: "collectPGData",
+                    operation: "viewPG",
+                    name: $("#pgPlayerName").val(),
+                    world: <?php echo $_GET["WORLD"]; ?>
                 }
             }).done(function(data){
-                window.location = "userpage.php?WORLD=<?php echo $_GET["WORLD"];?>";
-                alert("Operation completed succesfully! Data: " + data)
+                $("#results").html(data);
             })
         } else {
             $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
