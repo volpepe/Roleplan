@@ -65,7 +65,7 @@ else {
 <script>
 $(document).ready(function(){
     $("input").click(function(){
-        window.location = '<?php echo $_GET["callback"]; ?>' + "?WORLD=" . $_GET["WORLD"] . "&AREA=" + $(this).attr("id");
+        window.location = '<?php echo $_GET["callback"]; ?>' + "?WORLD=" + <?php echo $_GET["WORLD"];?>  + "&AREA=" + $(this).attr("id");
     })
 })
 </script>

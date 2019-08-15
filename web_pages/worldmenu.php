@@ -40,7 +40,7 @@ $(document).ready(function(){
         window.location = "worldchoose.php?callback=addareapage.php"
     })
     $("#obj-button").click(function(){
-        window.location = "addobjpage.php"
+        window.location = "worldchoose.php?callback=areachoose.php&final_callback=addobjinarea.php"
     })
 })
 </script>

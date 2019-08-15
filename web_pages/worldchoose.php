@@ -65,7 +65,12 @@ else {
 <script>
 $(document).ready(function(){
     $("input").click(function(){
-        window.location = '<?php echo $_GET["callback"]; ?>' + "?WORLD=" + $(this).attr("id");
+        <?php
+        if (!isset($_GET["final_callback"])){?>
+            window.location = '<?php echo $_GET["callback"]; ?>' + "?WORLD=" + $(this).attr("id");
+        <?php } else {?>
+            window.location = '<?php echo $_GET["callback"]; ?>' + "?WORLD=" + $(this).attr("id") + "&callback=<?php echo $_GET["final_callback"];?>"
+        <?php } ?>
     })
 })
 </script>

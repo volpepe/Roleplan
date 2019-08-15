@@ -79,6 +79,7 @@ function print_PG_tabled_info($row) {
     } else {
         echo '<th style="text-align:right; padding: 10px;" colspan=2>Peso totale trasportato: 0.00 </th>';
     }
+    /* display quests*/
     echo "</table>
             <h5>Quest in corso:</h5>
             <ul style='text-align:left'>";
@@ -104,6 +105,8 @@ function print_PG_tabled_info($row) {
     echo "</ul>";
 }
 
+
+/*main switch*/
 switch ($_POST["operation"]) {
 
     //M01
