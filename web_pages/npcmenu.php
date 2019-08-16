@@ -40,7 +40,7 @@
 <script>
 $(document).ready(function(){
     $("#npc-button").click(function(){
-        window.location = "npcmanage.php"
+        window.location = "addNPC.php"
     })
     $("#interest-button").click(function(){
         window.location = "interestmanage.php"
