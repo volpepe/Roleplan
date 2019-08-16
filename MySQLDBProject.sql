@@ -33,7 +33,7 @@ CREATE TABLE Tipi_Oggetto(
      Nome VARCHAR(80) NOT NULL,
      Peso REAL NOT NULL CHECK(Peso >= 0), /* in kgs */
      Descrizione VARCHAR(400) NOT NULL,
-     CategoriaOggetto VARCHAR(20) NOT NULL CHECK(CategoriaOggetto IN ('vestiario', 'valuta', 'scritto', 'cibo', 'pozione', 'ingrediente')),
+     CategoriaOggetto VARCHAR(20) NOT NULL CHECK(CategoriaOggetto IN ('vestiario', 'valuta', 'scritto', 'cibo', 'pozione', 'ingrediente', 'arma')),
      Protezione INT CHECK(Protezione >= 0), /* user-scaled value */
      Danni INT CHECK(Danni >= 0),
      ValoreRelativo INT CHECK(ValoreRelativo >= 0)
