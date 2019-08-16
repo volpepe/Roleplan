@@ -120,12 +120,15 @@ switch ($_POST["operation"]) {
 
     //M01
     case 'addRecipe':
-        $sql = "INSERT INTO ricette(OggettoCreato) VALUES ('" . $_POST["toCreate"] . "')";
+        
+        $sql = "INSERT INTO ricette(OggettoCreato) 
+                VALUES ('" . $conn->escape_string($_POST['toCreate']) . "')";
         do_insert_query($sql);
         $recipe = $conn->insert_id;
         for ($i=1; $i<=4 ; $i++) { 
             if ($_POST["ing" . $i] > -1) {
-                $sql = "INSERT INTO parte_di(TipoOggetto, Ricetta, Quantita) VALUES(" . $_POST["ing" . $i] . ", " . $recipe .", " . $_POST['q' . $i] . ")";
+                $sql = "INSERT INTO parte_di(TipoOggetto, Ricetta, Quantita) 
+                        VALUES(" . $_POST["ing" . $i] . ", " . $recipe .", " . $_POST['q' . $i] . ")";
                 do_insert_query($sql);
             }
         }
@@ -135,16 +138,17 @@ switch ($_POST["operation"]) {
     case 'addArea':
         $array = json_decode($_POST["areaAdiacences"]);
         $sql = "INSERT INTO aree(Mondo, IDArea, NomeArea, Descrizione, CentroAbitato)
-        VALUES (" . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ", '" . $_POST["areaName"] . "', '" . $_POST["areaDesc"] . "', 0)";
+                VALUES (" . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ", '" . $conn->escape_string($_POST["areaName"]) . "', '" . $conn->escape_string($_POST["areaDesc"]) . "', 0)";
         do_insert_query($sql);
-        $sql = "INSERT INTO class_aree(TipoArea, Mondo, Area) VALUES (" . $_POST["areaType"] . ", " . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ")";
+        $sql = "INSERT INTO class_aree(TipoArea, Mondo, Area) 
+                VALUES (" . $_POST["areaType"] . ", " . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ")";
         do_insert_query($sql);
         foreach ($array as $ad_ar) {
             $sql = "INSERT INTO adiacenze(Mondo, Area, AdiacenteAdArea)
-            VALUES (" . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ", " . $ad_ar . ")";
+                    VALUES (" . $_POST["areaWorld"] . ", " . $_POST["areaID"] . ", " . $ad_ar . ")";
             do_insert_query($sql);
             $sql = "INSERT INTO adiacenze(Mondo, Area, AdiacenteAdArea)
-            VALUES (" . $_POST["areaWorld"] . ", " . $ad_ar . ", " . $_POST["areaID"] . ")";
+                    VALUES (" . $_POST["areaWorld"] . ", " . $ad_ar . ", " . $_POST["areaID"] . ")";
             do_insert_query($sql);
         }
         break;
@@ -158,7 +162,8 @@ switch ($_POST["operation"]) {
 
     //M04
     case 'addPG':
-        $sql = "INSERT INTO Personaggi_Giocanti(NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) VALUES('". $_POST["charName"] . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", '" . $_POST["charPlayer"]. "', " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
+        $sql = "INSERT INTO Personaggi_Giocanti(NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) 
+                VALUES('" . $conn->escape_string($_POST['charName']) . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", '" . $conn->escape_string($_POST["charPlayer"]) . "', " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
         do_insert_query($sql);
         break;
     
@@ -172,11 +177,11 @@ switch ($_POST["operation"]) {
     //E01
     case 'viewPG':
         $sql = "SELECT p.IDPersonaggio, p.NomePersonaggio, p.Livello, p.PuntiVitaMax, p.PuntiVitaAtt, p.PuntiExp, a.NomeArea, r.NomeRazza 
-        FROM personaggi_giocanti p, razze r, aree a 
-        WHERE p.NomeGiocatore='" . $_POST["name"] . "' 
-        AND p.MondoPresenza = ". $_POST["world"] . "
-        AND p.AreaPresenza = a.IDArea
-        AND p.Razza = r.IDRazza";
+                FROM personaggi_giocanti p, razze r, aree a 
+                WHERE p.NomeGiocatore='" . $_POST["name"] . "' 
+                AND p.MondoPresenza = ". $_POST["world"] . "
+                AND p.AreaPresenza = a.IDArea
+                AND p.Razza = r.IDRazza";
         $result = $conn->query($sql);
         while($row = $result->fetch_assoc()){
             //for each charachter
