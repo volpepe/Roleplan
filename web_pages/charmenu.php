@@ -40,7 +40,7 @@ $(document).ready(function(){
         window.location = "npcmenu.php"
     })
     $("#pg-button").click(function(){
-        window.location = "worldchoose.php?callback=showPG.php"
+        window.location = "worldchoose.php?callback=addPG.php"
     })
 })
 </script>
