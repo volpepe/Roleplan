@@ -26,6 +26,7 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
     <link rel="stylesheet" href="styles/choicestyle.css">
     <link rel="stylesheet" href="styles/topbar.css">
     <link rel="stylesheet" href="styles/formpage.css">
+    <link rel="stylesheet" href="styles/nostyle.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -42,7 +43,7 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
         <form>
             <div class="container">
                 <label for="addobj">Tipo di Oggetto da Inserire: </label>
-                <select name="addobj" id="addobj" class="custom-select">
+                <select name="addobj" id="addobj" class="custom-select form-control">
                 <?php
                     $sql = "SELECT Nome, IDTipoOgg FROM tipi_oggetto";
                     $result=mysqli_query($conn, $sql);
@@ -55,9 +56,29 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
                     }
                 ?>
                 </select>
-                <div id="result" style="color:green"></div>
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
                 <button class="btn btn-danger dec" id="removeButton">Annulla</button>
+                <table class="table-striped" style="width:100%">
+                    <tr class="header">
+                        <th style="width:80%">Nome Oggetto</th>
+                        <th></th>
+                    </tr>
+                <?php
+                //first initialization of the table
+                $sql = "SELECT t.Nome, o.IDOggetto
+                        FROM tipi_oggetto t, oggetti o 
+                        WHERE o.MondoPresenza = " . $_GET["WORLD"] . "
+                        AND o.AreaPresenza = " . $_GET["AREA"] . "
+                        AND o.TipoOggetto = t.IDTipoOgg";
+                $result = $conn->query($sql);
+                while ($row = $result->fetch_assoc()){
+                    echo "<tr id=" . $row["IDOggetto"] . ">
+                            <td class='first'>" . $row["Nome"] . "</td>
+                            <td><button class='nostyle deleteobj'>Elimina Oggetto</button></td>
+                        </tr>";
+                }
+                ?>
+                </table>
             </div>
         </form>  
     </div>
@@ -77,12 +98,27 @@ $(document).ready(function(){
             type: "POST",
             url: "operationsAPI.php",
             data: {
-                operation: "addItem",
+                operation: "addItemInArea",
                 objType: $("#addobj").val(),
-                world: <?php echo $_GET["WORLD"]; ?>
-                area <?php echo $_GET["AREA"]; ?>
+                world: <?php echo $_GET["WORLD"]; ?>,
+                area: <?php echo $_GET["AREA"]; ?>
             }
-            //add table visualization in done
+        }).done(function(data){
+            $("table tr.header").after("<tr id=" + data + "><td class='first'>" + $("#addobj :selected").text() + "</td><td><button class='nostyle deleteobj'>Elimina Oggetto</button></td></tr>")
+        })
+    })
+    $("table ").on("click", "button", function(e){
+        e.preventDefault();
+        id = $(this).parent().parent().attr("id")
+        $.ajax({
+            type: "POST",
+            url: "operationsAPI.php",
+            data: {
+                operation: "removeItemFromArea",
+                id: id
+            }                
+        }).done(function(){
+            $("#" + id).remove()
         })
     })
 })

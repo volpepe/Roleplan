@@ -154,10 +154,14 @@ switch ($_POST["operation"]) {
         break;
 
     //M03
-    case 'addObjInArea':
+    case 'addItemInArea':
         $sql = "INSERT INTO oggetti(MondoPresenza, AreaPresenza, TipoOggetto)
                 VALUES (" . $_POST["world"] . ", " . $_POST["area"] . ", " . $_POST["objType"] . ")";
-        do_insert_query($sql);
+        if ($conn->query($sql) === TRUE) {
+            echo $conn->insert_id;
+        } else {
+            echo "Error: " . $conn->error;
+        }
         break;
 
     //M04
@@ -168,7 +172,7 @@ switch ($_POST["operation"]) {
         break;
     
     //M11
-    case 'removeObjFromArea':
+    case 'removeItemFromArea':
         $sql = "DELETE FROM oggetti
                 WHERE IDOggetto = " . $_POST["id"];
         do_delete_query($sql);
@@ -193,4 +197,7 @@ switch ($_POST["operation"]) {
         echo "no operation";
         break;
 }
+
+//TODO: test E01 on quests
 ?>
+
