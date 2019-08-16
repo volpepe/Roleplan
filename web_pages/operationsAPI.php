@@ -166,8 +166,15 @@ switch ($_POST["operation"]) {
 
     //M04
     case 'addPG':
-        $sql = "INSERT INTO Personaggi_Giocanti(NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) 
+        $sql = "INSERT INTO personaggi_giocanti(NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) 
                 VALUES('" . $conn->escape_string($_POST['charName']) . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", '" . $conn->escape_string($_POST["charPlayer"]) . "', " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
+        do_insert_query($sql);
+        break;
+
+    //M05
+    case 'addNPC':
+        $sql = "INSERT INTO npc(Nome, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, MondoPresenza, AreaPresenza, Razza) 
+                VALUES('" . $conn->escape_string($_POST['charName']) . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
         do_insert_query($sql);
         break;
     

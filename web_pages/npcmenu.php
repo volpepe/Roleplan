@@ -40,7 +40,7 @@
 <script>
 $(document).ready(function(){
     $("#npc-button").click(function(){
-        window.location = "addNPC.php"
+        window.location = "worldchoose.php?callback=addNPC.php"
     })
     $("#interest-button").click(function(){
         window.location = "interestmanage.php"
