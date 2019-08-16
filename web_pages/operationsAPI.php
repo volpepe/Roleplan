@@ -15,9 +15,18 @@ if ($conn->connect_error) {
 function do_insert_query($sql) {
     global $conn;
     if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully</br>";
+        echo "New record created successfully";
     } else {
-        echo "Error: " . $conn->error . "</br>";
+        echo "Error: " . $conn->error;
+    }
+}
+
+function do_delete_query($sql) {
+    global $conn;
+    if ($conn->query($sql) === TRUE) {
+        echo "Record deleted successfully";
+    } else {
+        echo "Error: " . $conn->error;
     }
 }
 
@@ -140,10 +149,24 @@ switch ($_POST["operation"]) {
         }
         break;
 
+    //M03
+    case 'addObjInArea':
+        $sql = "INSERT INTO oggetti(MondoPresenza, AreaPresenza, TipoOggetto)
+                VALUES (" . $_POST["world"] . ", " . $_POST["area"] . ", " . $_POST["objType"] . ")";
+        do_insert_query($sql);
+        break;
+
     //M04
     case 'addPG':
         $sql = "INSERT INTO Personaggi_Giocanti(NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) VALUES('". $_POST["charName"] . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", '" . $_POST["charPlayer"]. "', " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
         do_insert_query($sql);
+        break;
+    
+    //M11
+    case 'removeObjFromArea':
+        $sql = "DELETE FROM oggetti
+                WHERE IDOggetto = " . $_POST["id"];
+        do_delete_query($sql);
         break;
 
     //E01
