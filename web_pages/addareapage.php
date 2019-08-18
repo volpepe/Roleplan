@@ -125,7 +125,7 @@ $(document).ready(function(){
                 }
             }).done(function(data){
                 window.location = "planmenu.php";
-                alert("Operation completed succesfully! Data: " + data)
+                alert("Operation completed succesfully! " + data)
             })
         } else {
             $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")

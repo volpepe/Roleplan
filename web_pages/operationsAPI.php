@@ -114,7 +114,6 @@ function print_PG_tabled_info($row) {
     echo "</ul>";
 }
 
-
 /*main switch*/
 switch ($_POST["operation"]) {
 
@@ -175,6 +174,13 @@ switch ($_POST["operation"]) {
     case 'addNPC':
         $sql = "INSERT INTO npc(Nome, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, MondoPresenza, AreaPresenza, Razza) 
                 VALUES('" . $conn->escape_string($_POST['charName']) . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
+        do_insert_query($sql);
+        break;
+    
+    //M06
+    case 'addObjType':
+        $sql = "INSERT INTO tipi_oggetto(Nome, Peso, Descrizione, CategoriaOggetto, Protezione, Danni, ValoreRelativo) 
+                VALUES('" . $conn->escape_string($_POST["name"]) . "', " . $_POST['weight'] . ", '" . $conn->escape_string($_POST['description']) . "', '" . $_POST['type'] . "', " . $_POST['protection'] . ", " . $_POST['damage'] . ", " .  $_POST['value'] .")";
         do_insert_query($sql);
         break;
     

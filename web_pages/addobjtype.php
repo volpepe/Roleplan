@@ -134,7 +134,48 @@ $(document).ready(function(){
 
     $("#sendButton").click(function(e){
         e.preventDefault();
-        //todo: finish this function and its api operation
+        console.log($("#objName").val().length > 0)
+        console.log($("#weight").val() > 0)
+        console.log($("#objDesc").val().length > 0)
+        console.log($("#objName").val().length > 0)
+        console.log($("#objName").val().length > 0)
+        console.log($("#objName").val().length > 0)
+        if  (   $("#objName").val().length > 0 && 
+                $("#weight").val() > 0 && 
+                $("#objDesc").val().length > 0 && 
+                (   
+                    ($("#objDesc").val() == "arma" && $("#damage").val() >= 0) || 
+                    ($("#objDesc").val() == "valuta" && $("#value").val() >= 0) || 
+                    ($("#objDesc").val() == "vestiario" && $("#protection").val() >= 0) ||
+                    ($("#objDesc").val() != "vestiario" && $("#objDesc").val() != "valuta" && $("#objDesc").val() != "arma")
+                )
+            ) 
+        {
+            $(this).attr("disabled", true);
+            var objType = $("#classObj").val()
+            var protection = objType == "vestiario" ? $("#protection").val() : "null"
+            var value = objType == "valuta" ? $("#value").val() : "null"
+            var damage = objType == "arma" ? $("#damage").val() : "null"
+            $.ajax({
+                type: "POST",
+                url: "operationsAPI.php",
+                data: {
+                    operation: "addObjType",
+                    name: $("#objName").val(),
+                    weight: $("#weight").val(),
+                    description: $("#objDesc").val(),
+                    type: objType,
+                    protection: protection,
+                    value: value,
+                    damage: damage
+                }                
+            }).done(function(data){
+                window.location = "objmenu.php";
+                alert("Operation completed succesfully! " + data)
+            })
+        } else {
+            $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
+        }
     })
 })
 </script>
