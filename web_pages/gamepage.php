@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>RolePlan: Master Page</title>
+    <title>RolePlan: Game Mode Page</title>
 </head>
 
 <body>
@@ -23,13 +23,19 @@
         </div>
         <div class="row">
             <div class="col mh-100"> 
-                <button id="plan-button" class="shadow-lg align-middle rounded"><i class="fas fa-book-reader"></i> Modalità Pianificazione</button>
+                <button id="market-button" class="shadow-lg align-middle rounded"><i class="fas fa-comments-dollar"></i> Mercato</button>
             </div>
             <div class="col">
-                <button id="game-button" class="shadow-lg align-middle rounded"><i class="fas fa-dice"></i> Modalità Gioco</button>
+                <button id="fight-button" class="shadow-lg align-middle rounded"><i class="fas fa-fist-raised"></i> Battaglia</button>
             </div>
             <div class="col">
-                <button id="data-button" class="shadow-lg align-middle rounded"><i class="fas fa-book"></i> Altri Dati</button>
+                <button id="quest-button" class="shadow-lg align-middle rounded"><i class="fas fa-book"></i> Quest</button>
+            </div>
+            <div class="col">
+                <button id="inventory-button" class="shadow-lg align-middle rounded"><i class="fas fa-object-group"></i> Inventari</button>
+            </div>
+            <div class="col">
+                <button id="area-button" class="shadow-lg align-middle rounded"><i class="fas fa-globe-europe"></i> Cambio Area di Gioco</button>
             </div>
         </div>
     </div>
@@ -39,14 +45,12 @@
 
 <script>
 $(document).ready(function(){
+    /*
     $("#plan-button").click(function(){
         window.location = "planmenu.php"
-    })
-    $("#game-button").click(function(){
+    })*/
+    $("#area-button").click(function(){
         window.location = "worldchoose.php?callback=areachoose.php&final_callback=gamepage.php"
-    })
-    $("#data-button").click(function(){
-        window.location = "datamenu.php"
     })
 })
 </script>
