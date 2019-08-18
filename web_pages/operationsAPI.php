@@ -183,6 +183,50 @@ switch ($_POST["operation"]) {
                 VALUES('" . $conn->escape_string($_POST["name"]) . "', " . $_POST['weight'] . ", '" . $conn->escape_string($_POST['description']) . "', '" . $_POST['type'] . "', " . $_POST['protection'] . ", " . $_POST['damage'] . ", " .  $_POST['value'] .")";
         do_insert_query($sql);
         break;
+
+    //M07
+    case 'addQuest':
+        $sql = "INSERT INTO quest(Arco, NumQuest, RicompensaExp, Nome, LivelloConsigliato, Descrizione, Disponibile, TipoQuest, NPCDialogo, NPCConsegna, MondoDestinazione, AreaDestinazione) 
+                VALUES (" . $_POST["arc"] . ", " . $_POST["numQuest"] . ", " . $_POST["exp"] . ", '" . $conn->escape_string($_POST["questName"]) . "', " . $_POST["minLev"] . ", '" . 
+                            $conn->escape_string($_POST["questDesc"]) . "', " . $_POST["disp"] . ", '" . $_POST["questType"] . "', " . $_POST["npcToTalk"] . ", " . $_POST["giverNPC"] . ", " 
+                            . $_POST["worldToGetTo"] . ", " . $_POST["areaToGetTo"] . ")";
+        do_insert_query($sql);
+        //maximum of 5 items
+        for ($i=1; $i<=5 ; $i++) { 
+            if ($_POST["item" . $i] > -1) {
+                $sql = "INSERT INTO ricompense(TipoOggetto, Arco, NumQuest, Quantita)
+                        VALUES(" . $_POST["item" . $i] . ", " . $_POST["arc"] .", " . $_POST["numQuest"] . ", " . $_POST["quant" . $i] . ")";
+                do_insert_query($sql);
+            }
+        }
+        if ($_POST["questType"] == 'eliminazione') {
+            //maximum of 3 npcs to kill
+            for ($i=1; $i<=5 ; $i++) { 
+                if ($_POST["npcToKill" . $i] > -1) {
+                    $sql = "INSERT INTO eliminazioni_necessarie(Arco, NumQuest, NPCDaEliminare) 
+                            VALUES (" . $_POST["arc"] .", " . $_POST["numQuest"] . ", " . $_POST["npcToKill" . $i] . ")";
+                    do_insert_query($sql);
+                }
+            }
+        }
+        else if ($_POST["questType"] == 'raccolto') {
+            //maximum of 5 items to obtain
+            for ($i=1; $i<=5 ; $i++) { 
+                if ($_POST["itemToObtain" . $i] > -1) {
+                    $sql = "INSERT INTO raccolti_necessari(OggettoDaRaccogliere, Arco, NumQuest, Quantita) 
+                            VALUES (" . $_POST["objToGet" . $i] .", " . $_POST["arc"] . ", " . $_POST["numQuest"] . ", " . $_POST["quantToGet" . $i] . ")";
+                    do_insert_query($sql);
+                }
+            }
+        }
+        break;
+    
+    //M08
+    case 'addArc':
+        $sql = "INSERT INTO Archi(NomeArco) VALUES ('" . $_POST["arc"] . "')";
+        do_insert_query($sql);
+        break;
+
     
     //M11
     case 'removeItemFromArea':
