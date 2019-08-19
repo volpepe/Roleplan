@@ -134,12 +134,6 @@ $(document).ready(function(){
 
     $("#sendButton").click(function(e){
         e.preventDefault();
-        console.log($("#objName").val().length > 0)
-        console.log($("#weight").val() > 0)
-        console.log($("#objDesc").val().length > 0)
-        console.log($("#objName").val().length > 0)
-        console.log($("#objName").val().length > 0)
-        console.log($("#objName").val().length > 0)
         if  (   $("#objName").val().length > 0 && 
                 $("#weight").val() > 0 && 
                 $("#objDesc").val().length > 0 && 

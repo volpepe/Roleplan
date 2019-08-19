@@ -103,7 +103,6 @@ $(document).ready(function(){
         q3= $("#qt-2").val()
         ing4= $("#ingredient-3").val()
         q4= $("#qt-3").val()
-        console.log(toCreate + ing1 + q1 + ing2 + q2 + ing3 + q3 + ing4+ q4)
         if(toCreate && ((ing1 > -1 && q1 && q1 >= 0) || (ing2 > -1 && q2 && q2 >= 0) || (ing3 > -1 && q3 && q3 >= 0) || (ing4 > -1 && q4 && q4 >= 0)))
         {
             $(this).attr("disabled", true);

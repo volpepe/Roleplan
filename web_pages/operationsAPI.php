@@ -127,7 +127,6 @@ switch ($_POST["operation"]) {
 
     //M01
     case 'addRecipe':
-        
         $sql = "INSERT INTO ricette(OggettoCreato) 
                 VALUES ('" . $conn->escape_string($_POST['toCreate']) . "')";
         do_insert_query($sql);
@@ -197,8 +196,7 @@ switch ($_POST["operation"]) {
         $numQuest = get_quest_num($_POST["arc"]);
         $sql = "INSERT INTO quest(Arco, NumQuest, RicompensaExp, Nome, LivelloConsigliato, Descrizione, Disponibile, TipoQuest, NPCDialogo, NPCConsegna, MondoDestinazione, AreaDestinazione) 
                 VALUES (" . $_POST["arc"] . ", " . $numQuest . ", " . $_POST["exp"] . ", '" . $conn->escape_string($_POST["questName"]) . "', " . $_POST["minLev"] . ", '" . 
-                            $conn->escape_string($_POST["questDesc"]) . "', " . $_POST["disp"] . ", '" . $_POST["questType"] . "', " . $_POST["npcToTalk"] . ", " . $_POST["giverNPC"] . ", " 
-                            . $_POST["worldToGetTo"] . ", " . $_POST["areaToGetTo"] . ")";
+                            $conn->escape_string($_POST["questDesc"]) . "', " . $_POST["disp"] . ", '" . $_POST["questType"] . "', " . $_POST["npcToTalk"] . ", " . $_POST["giverNPC"] . ", " . $_POST["worldToGetTo"] . ", " . $_POST["areaToGetTo"] . ")";
         do_insert_query($sql);
         //maximum of 5 items
         for ($i=1; $i<=5 ; $i++) { 
@@ -221,7 +219,7 @@ switch ($_POST["operation"]) {
         else if ($_POST["questType"] == 'raccolto') {
             //maximum of 5 items to obtain
             for ($i=1; $i<=5 ; $i++) { 
-                if ($_POST["itemToObtain" . $i] > -1) {
+                if ($_POST["objToGet" . $i] > -1) {
                     $sql = "INSERT INTO raccolti_necessari(OggettoDaRaccogliere, Arco, NumQuest, Quantita) 
                             VALUES (" . $_POST["objToGet" . $i] .", " . $_POST["arc"] . ", " . $numQuest . ", " . $_POST["quantToGet" . $i] . ")";
                     do_insert_query($sql);
