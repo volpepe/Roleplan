@@ -114,6 +114,14 @@ function print_PG_tabled_info($row) {
     echo "</ul>";
 }
 
+function get_quest_num($arc){
+    global $conn;
+    $sql = "SELECT MAX(NumQuest) AS LastID FROM quest WHERE Arco = " . $arc;
+    $result=mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    return ($row["LastID"] === NULL) ? 0: $row["LastID"] + 1; 
+}
+
 /*main switch*/
 switch ($_POST["operation"]) {
 
@@ -186,8 +194,9 @@ switch ($_POST["operation"]) {
 
     //M07
     case 'addQuest':
+        $numQuest = get_quest_num($_POST["arc"]);
         $sql = "INSERT INTO quest(Arco, NumQuest, RicompensaExp, Nome, LivelloConsigliato, Descrizione, Disponibile, TipoQuest, NPCDialogo, NPCConsegna, MondoDestinazione, AreaDestinazione) 
-                VALUES (" . $_POST["arc"] . ", " . $_POST["numQuest"] . ", " . $_POST["exp"] . ", '" . $conn->escape_string($_POST["questName"]) . "', " . $_POST["minLev"] . ", '" . 
+                VALUES (" . $_POST["arc"] . ", " . $numQuest . ", " . $_POST["exp"] . ", '" . $conn->escape_string($_POST["questName"]) . "', " . $_POST["minLev"] . ", '" . 
                             $conn->escape_string($_POST["questDesc"]) . "', " . $_POST["disp"] . ", '" . $_POST["questType"] . "', " . $_POST["npcToTalk"] . ", " . $_POST["giverNPC"] . ", " 
                             . $_POST["worldToGetTo"] . ", " . $_POST["areaToGetTo"] . ")";
         do_insert_query($sql);
@@ -195,16 +204,16 @@ switch ($_POST["operation"]) {
         for ($i=1; $i<=5 ; $i++) { 
             if ($_POST["item" . $i] > -1) {
                 $sql = "INSERT INTO ricompense(TipoOggetto, Arco, NumQuest, Quantita)
-                        VALUES(" . $_POST["item" . $i] . ", " . $_POST["arc"] .", " . $_POST["numQuest"] . ", " . $_POST["quant" . $i] . ")";
+                        VALUES(" . $_POST["item" . $i] . ", " . $_POST["arc"] .", " . $numQuest . ", " . $_POST["quant" . $i] . ")";
                 do_insert_query($sql);
             }
         }
         if ($_POST["questType"] == 'eliminazione') {
             //maximum of 3 npcs to kill
-            for ($i=1; $i<=5 ; $i++) { 
+            for ($i=1; $i<=3 ; $i++) { 
                 if ($_POST["npcToKill" . $i] > -1) {
                     $sql = "INSERT INTO eliminazioni_necessarie(Arco, NumQuest, NPCDaEliminare) 
-                            VALUES (" . $_POST["arc"] .", " . $_POST["numQuest"] . ", " . $_POST["npcToKill" . $i] . ")";
+                            VALUES (" . $_POST["arc"] .", " . $numQuest . ", " . $_POST["npcToKill" . $i] . ")";
                     do_insert_query($sql);
                 }
             }
@@ -214,7 +223,7 @@ switch ($_POST["operation"]) {
             for ($i=1; $i<=5 ; $i++) { 
                 if ($_POST["itemToObtain" . $i] > -1) {
                     $sql = "INSERT INTO raccolti_necessari(OggettoDaRaccogliere, Arco, NumQuest, Quantita) 
-                            VALUES (" . $_POST["objToGet" . $i] .", " . $_POST["arc"] . ", " . $_POST["numQuest"] . ", " . $_POST["quantToGet" . $i] . ")";
+                            VALUES (" . $_POST["objToGet" . $i] .", " . $_POST["arc"] . ", " . $numQuest . ", " . $_POST["quantToGet" . $i] . ")";
                     do_insert_query($sql);
                 }
             }

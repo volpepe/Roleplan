@@ -37,7 +37,8 @@
 <script>
 $(document).ready(function(){
     $("#quest-button").click(function(){
-        window.location = "addquest.php"
+        //a quest is confined to a game world
+        window.location = "worldchoose.php?callback=addquest.php"
     })
     $("#arc-button").click(function(){
         window.location = "addarc.php"
