@@ -234,12 +234,19 @@ switch ($_POST["operation"]) {
         do_insert_query($sql);
         break;
 
-    
     //M11
     case 'removeItemFromArea':
         $sql = "DELETE FROM oggetti
                 WHERE IDOggetto = " . $_POST["id"];
         do_delete_query($sql);
+        break;
+
+    //M12
+    case 'addInterest':
+        $sql = "INSERT INTO Interessi_Acquisto(TipoOggetto, NPC, PrezzoAcquisto) 
+                VALUES (" . $_POST["obj"] . ", " .$_POST["NPC"] . ", ". $_POST["price"] . ") 
+                ON DUPLICATE KEY UPDATE PrezzoAcquisto=" . $_POST["price"];
+        do_insert_query($sql);
         break;
 
     //E01
@@ -263,5 +270,6 @@ switch ($_POST["operation"]) {
 }
 
 //TODO: test E01 on quests
+//      test M12 & M13
 ?>
 

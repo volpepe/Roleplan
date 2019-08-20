@@ -43,10 +43,10 @@ $(document).ready(function(){
         window.location = "worldchoose.php?callback=addNPC.php"
     })
     $("#interest-button").click(function(){
-        window.location = "interestmanage.php"
+        window.location = "worldchoose.php?callback=addinterest.php"
     })
     $("#work-button").click(function(){
-        window.location = "workmanage.php"
+        window.location = "worldchoose.php?callback=addwork.php"
     })
 })
 </script>
