@@ -248,6 +248,30 @@ switch ($_POST["operation"]) {
                 ON DUPLICATE KEY UPDATE PrezzoAcquisto=" . $_POST["price"];
         do_insert_query($sql);
         break;
+    
+    //M13
+    case 'addOccupation':
+        $stmt = $conn->prepare("INSERT INTO occupazioni(Mondo, Area, NPC, Lavoro) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE Lavoro=?");
+        $stmt->bind_param("iiiii", $world, $area, $npc, $work, $work);
+        $world = $_POST["world"];
+        $area = $_POST["area"];
+        $npc = $_POST["npc"];
+        $work = $_POST["work"];
+        $stmt->execute();
+        $stmt = $conn->prepare("UPDATE aree
+        SET CentroAbitato = CASE WHEN EXISTS(
+            SELECT COUNT(NPC)
+            FROM occupazioni
+            WHERE Mondo = ? AND Area = ?
+            GROUP BY Mondo, Area
+            HAVING COUNT(NPC) >= 3)
+        THEN true
+        ELSE false END
+        WHERE Mondo = ? AND IDArea = ?
+        ");
+        $stmt->bind_param("iiii", $world, $area, $world, $area); $stmt->execute();
+        $stmt->close();
+        break;
 
     //E01
     case 'viewPG':
@@ -270,6 +294,6 @@ switch ($_POST["operation"]) {
 }
 
 //TODO: test E01 on quests
-//      test M12 & M13
+//      test M13
 ?>
 
