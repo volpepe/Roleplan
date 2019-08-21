@@ -25,7 +25,7 @@ if ($conn->connect_error) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>RolePlan: Area Adding Page</title>
+    <title>RolePlan: Fight Page</title>
 </head>
 <body>
     <div class="container-fluid">
@@ -106,7 +106,7 @@ $(document).ready(function(){
         var idselect = $(this).attr("id").substring(3, 4)
         if (idpg >= 0) {
             var name = $("#pg-" + idselect + " option:selected").attr("pg-name")
-            $("#results").append("<div class='form-group' id='pgdiv" + idselect + "'><label for='endhppg" + idpg + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhppg" + idpg +"' id='endhppg" + idpg +"'></div><div class='form-group'>    <label for='endpx" + idpg +"'>Punti esperienza guadagnati da "+ name +": </label> </div><div class='form-group'>    <input type='number' class='form-control' name=''endpx" + idpg +"' id=''endpx" + idpg +"'></div></div>")
+            $("#results").append("<div class='form-group ch' id='pgdiv" + idselect + "'><label for='endhppg" + idpg + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhppg" + idpg +"' id='endhppg" + idpg +"'></div></div>")
         } else {
             $("#pgdiv" + idselect).remove()
         }
@@ -116,15 +116,56 @@ $(document).ready(function(){
         var idselect = $(this).attr("id").substring(4, 5)
         if (idnpc >= 0) {
             var name = $("#npc-" + idselect + " option:selected").attr("npc-name")
-            $("#results").append("<div class='form-group' id='npcdiv" + idselect + "'><label for='endhpnpc" + idnpc + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhpnpc" + idnpc +"' id='endhpnpc" + idnpc +"'></div><div class='form-group'></div>")
+            $("#results").append("<div class='form-group ch' id='npcdiv" + idselect + "'><label for='endhpnpc" + idnpc + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhpnpc" + idnpc +"' id='endhpnpc" + idnpc +"'></div></div>")
         } else {
             $("#npcdiv" + idselect).remove()
         }
     })
-    /*$("#sendButton").click(function(e){
+    $("#sendButton").click(function(e){
         e.preventDefault();
-        
-    })*/
+        $(this).attr("disabled", true);
+        $("#results div.ch").each(function(){
+            if($(this).attr("id").substring(0, 2) == "pg"){
+                //pg
+                hpVal = $(this).find("input").val()
+                id = $(this).find("input").attr("id").substring(7)
+                if(hpVal) {
+                    console.log("hp: " + hpVal + " id: " + id)
+                    $.ajax({
+                        type: "POST",
+                        url: "operationsAPI.php",
+                        data: {
+                            operation: "updateHP",
+                            typechar: "pg",
+                            idchar: id,
+                            newHP: hpVal
+                        }
+                    })
+                } else {
+                    $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
+                }
+            } else {
+                //npc
+                hpVal = $(this).find("input").val()
+                id = $(this).find("input").attr("id").substring(8)
+                if(hpVal) {
+                    console.log("hp: " + hpVal + " id: " + id)
+                    $.ajax({
+                        type: "POST",
+                        url: "operationsAPI.php",
+                        data: {
+                            operation: "updateHP",
+                            typechar: "npc",
+                            idchar: id,
+                            newHP: hpVal
+                        }
+                    })
+                } else {
+                    $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
+                }                
+            }
+        })
+    })
 })
 </script>
 

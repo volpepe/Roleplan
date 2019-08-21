@@ -273,6 +273,9 @@ switch ($_POST["operation"]) {
         $stmt->close();
         break;
 
+    //M19
+        
+
     //E01
     case 'viewPG':
         $sql = "SELECT p.IDPersonaggio, p.NomePersonaggio, p.Livello, p.PuntiVitaMax, p.PuntiVitaAtt, p.PuntiExp, a.NomeArea, r.NomeRazza 
