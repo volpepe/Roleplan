@@ -61,12 +61,6 @@ if ($conn->connect_error) {
                     <input type="number"  min=-10 class="form-control" name="pgMaxPV" id="pgMaxPV">
                 </div>
                 <div class="form-group">
-                    <label for="pgEXP">Punti Esperienza: </label> 
-                </div>
-                <div class="form-group">
-                    <input type="number" min=0 class="form-control" name="pgEXP" id="pgEXP">
-                </div>
-                <div class="form-group">
                     <label for="areas">Area presso cui si trova: </label>
                     <select name="areas" id="areas" class="custom-select">
                     <?php
@@ -121,10 +115,9 @@ $(document).ready(function(){
         lev=$("#pgLev").val()
         pvMax=$("#pgMaxPV").val()
         pvAtt=$("#pgCurPV").val()
-        exp=$("#pgEXP").val()
         race=$("#races").val()
         if (name.length == 0) name = "null"
-        if(area && name && lev && pvMax && pvAtt && exp && race)
+        if(area && name && lev && pvMax && pvAtt && race)
         {
             $(this).attr("disabled", true);
             $.ajax({
@@ -138,7 +131,6 @@ $(document).ready(function(){
                     charLevel: lev,
                     charPVMax: pvMax,
                     charPVAtt: pvAtt,
-                    charEXP: exp,
                     charRace: race
                 }
             }).done(function(data){

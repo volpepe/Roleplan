@@ -110,7 +110,6 @@ CREATE TABLE NPC(
      Livello INT NOT NULL CHECK(Livello > 0),
      PuntiVitaMax INT NOT NULL CHECK(PuntiVitaMax > 0),
      PuntiVitaAtt INT NOT NULL CHECK(PuntiVitaAtt > 0 AND PuntiVitaAtt <= PuntiVitaMax),
-     PuntiExp INT NOT NULL CHECK (PuntiExp > 0),
      MondoPresenza INT NOT NULL,
      AreaPresenza INT NOT NULL,
      Razza INT NOT NULL,

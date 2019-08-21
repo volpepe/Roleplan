@@ -179,8 +179,8 @@ switch ($_POST["operation"]) {
 
     //M05
     case 'addNPC':
-        $sql = "INSERT INTO npc(Nome, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, MondoPresenza, AreaPresenza, Razza) 
-                VALUES('" . $conn->escape_string($_POST['charName']) . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charEXP"] . ", " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
+        $sql = "INSERT INTO npc(Nome, Livello, PuntiVitaMax, PuntiVitaAtt, MondoPresenza, AreaPresenza, Razza) 
+                VALUES('" . $conn->escape_string($_POST['charName']) . "', " . $_POST["charLevel"] . ", " . $_POST["charPVMax"] . ", " . $_POST["charPVAtt"] . ", " . $_POST["charWorld"]. ", " . $_POST["charArea"]. ", " . $_POST["charRace"] . ")";
         do_insert_query($sql);
         break;
     

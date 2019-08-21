@@ -45,12 +45,20 @@
 
 <script>
 $(document).ready(function(){
-    /*
-    $("#plan-button").click(function(){
-        window.location = "planmenu.php"
-    })*/
     $("#area-button").click(function(){
         window.location = "worldchoose.php?callback=areachoose.php&final_callback=gamepage.php"
+    })
+    $("#inventory-button").click(function(){
+        window.location = "inventory.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
+    })
+    $("#quest-button").click(function(){
+        window.location = "questmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
+    })
+    $("#fight-button").click(function(){
+        window.location = "fightpage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
+    })
+    $("#market-button").click(function(){
+        window.location = "marketpage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
     })
 })
 </script>
