@@ -51,7 +51,7 @@ if ($conn->connect_error) {
                             $result=mysqli_query($conn, $sql);
                             while ($row = mysqli_fetch_assoc($result))
                             {
-                                echo "<option value='" . $row["IDPersonaggio"] . "' pg-name='". $row["NomePersonaggio"]. "'>" . $row["NomePersonaggio"] . ", Liv. " . $row["Livello"] . ", " . $row["PuntiVitaAtt"] . "/" . $row["PuntiVitaMax"] . " PV </option>";
+                                echo "<option value='" . $row["IDPersonaggio"] . "' pg-name='". $row["NomePersonaggio"]. "' max-pv=" . $row["PuntiVitaMax"] . " >" . $row["NomePersonaggio"] . ", Liv. " . $row["Livello"] . ", " . $row["PuntiVitaAtt"] . "/" . $row["PuntiVitaMax"] . " PV </option>";
                             }
                         ?>
                         </select>
@@ -75,7 +75,7 @@ if ($conn->connect_error) {
                             while ($row = mysqli_fetch_assoc($result))
                             {
                                 if (is_null($row["Nome"])) $row["Nome"] = $row["NomeRazza"];
-                                echo "<option value='" . $row["IDNPC"] . "' npc-name='". $row["Nome"]. "'>" . $row["Nome"] . ", Liv. " . $row["Livello"] . ", " . $row["PuntiVitaAtt"] . "/" . $row["PuntiVitaMax"] . " PV </option>";
+                                echo "<option value='" . $row["IDNPC"] . "' npc-name='". $row["Nome"]. "' max-pv=" . $row["PuntiVitaMax"] . " >" . $row["Nome"] . ", Liv. " . $row["Livello"] . ", " . $row["PuntiVitaAtt"] . "/" . $row["PuntiVitaMax"] . " PV </option>";
                             }
                         ?>
                         </select>
@@ -106,7 +106,8 @@ $(document).ready(function(){
         var idselect = $(this).attr("id").substring(3, 4)
         if (idpg >= 0) {
             var name = $("#pg-" + idselect + " option:selected").attr("pg-name")
-            $("#results").append("<div class='form-group ch' id='pgdiv" + idselect + "'><label for='endhppg" + idpg + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhppg" + idpg +"' id='endhppg" + idpg +"'></div></div>")
+            var maxhp = $("#pg-" + idselect + " option:selected").attr("max-pv")
+            $("#results").append("<div class='form-group ch' max-pv=" + maxhp + " id='pgdiv" + idselect + "'><label for='endhppg" + idpg + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhppg" + idpg +"' id='endhppg" + idpg +"'></div></div>")
         } else {
             $("#pgdiv" + idselect).remove()
         }
@@ -116,31 +117,37 @@ $(document).ready(function(){
         var idselect = $(this).attr("id").substring(4, 5)
         if (idnpc >= 0) {
             var name = $("#npc-" + idselect + " option:selected").attr("npc-name")
-            $("#results").append("<div class='form-group ch' id='npcdiv" + idselect + "'><label for='endhpnpc" + idnpc + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhpnpc" + idnpc +"' id='endhpnpc" + idnpc +"'></div></div>")
+            var maxhp = $("#npc-" + idselect + " option:selected").attr("max-pv")
+            $("#results").append("<div class='form-group ch' max-pv=" + maxhp + " id='npcdiv" + idselect + "'><label for='endhpnpc" + idnpc + "'>Punti vita finali di " + name + ": </label><div class='form-group'>    <input type='number' class='form-control' name='endhpnpc" + idnpc +"' id='endhpnpc" + idnpc +"'></div></div>")
         } else {
             $("#npcdiv" + idselect).remove()
         }
     })
     $("#sendButton").click(function(e){
         e.preventDefault();
-        $(this).attr("disabled", true);
         $("#results div.ch").each(function(){
             if($(this).attr("id").substring(0, 2) == "pg"){
                 //pg
                 hpVal = $(this).find("input").val()
                 id = $(this).find("input").attr("id").substring(7)
+                maxHp = $(this).attr("max-pv")
                 if(hpVal) {
-                    console.log("hp: " + hpVal + " id: " + id)
-                    $.ajax({
-                        type: "POST",
-                        url: "operationsAPI.php",
-                        data: {
-                            operation: "updateHP",
-                            typechar: "pg",
-                            idchar: id,
-                            newHP: hpVal
-                        }
-                    })
+                    console.log("hp: " + hpVal + " id: " + id + " maxHp: " + maxHp)
+                    if (hpVal <= maxHp) {
+                        $(this).attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "operationsAPI.php",
+                            data: {
+                                operation: "updateHP",
+                                typechar: "pg",
+                                idchar: id,
+                                newHP: hpVal
+                            }
+                        })
+                    } else {
+                        $("#errors").html("<p style='color: red'>I punti vita attuali non possono superare il massimo</p>")
+                    }
                 } else {
                     $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
                 }
@@ -148,18 +155,24 @@ $(document).ready(function(){
                 //npc
                 hpVal = $(this).find("input").val()
                 id = $(this).find("input").attr("id").substring(8)
+                maxHp = $(this).attr("max-pv")
                 if(hpVal) {
-                    console.log("hp: " + hpVal + " id: " + id)
-                    $.ajax({
-                        type: "POST",
-                        url: "operationsAPI.php",
-                        data: {
-                            operation: "updateHP",
-                            typechar: "npc",
-                            idchar: id,
-                            newHP: hpVal
-                        }
-                    })
+                    console.log("hp: " + hpVal + " id: " + id + " maxHp: " + maxHp)
+                    if (hpVal <= maxHp) {
+                        $("#sendButton").attr("disabled", true);
+                        $.ajax({
+                            type: "POST",
+                            url: "operationsAPI.php",
+                            data: {
+                                operation: "updateHP",
+                                typechar: "npc",
+                                idchar: id,
+                                newHP: hpVal
+                            }
+                        })
+                    } else {
+                        $("#errors").html("<p style='color: red'>I punti vita attuali non possono superare il massimo</p>")
+                    }
                 } else {
                     $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
                 }                
