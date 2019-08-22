@@ -274,7 +274,27 @@ switch ($_POST["operation"]) {
         break;
 
     //M19
-        
+    case 'updateHP':
+        switch($_POST["typechar"]){
+            case 'npc':
+                $stmt = $conn->prepare("UPDATE npc SET PuntiVitaAtt = ? WHERE IDNPC = ?");
+                $stmt->bind_param("ii", $pvAtt, $idnpc);
+                $idnpc = $_POST["idchar"];
+                $pvAtt = $_POST["newHP"];
+                $stmt->execute(); $stmt->close();
+                break;
+
+            case 'pg':
+                $stmt = $conn->prepare("UPDATE personaggi_giocanti SET PuntiVitaAtt = ? WHERE IDPersonaggio = ?");
+                $stmt->bind_param("ii", $pvAtt, $idpg);
+                $idpg = $_POST["idchar"];
+                $pvAtt = $_POST["newHP"];
+                $stmt->execute(); $stmt->close();
+                break;
+
+            default: break;
+        }
+        break;
 
     //E01
     case 'viewPG':

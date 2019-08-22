@@ -125,16 +125,22 @@ $(document).ready(function(){
     })
     $("#sendButton").click(function(e){
         e.preventDefault();
+        var doNext = true;
         $("#results div.ch").each(function(){
-            if($(this).attr("id").substring(0, 2) == "pg"){
-                //pg
+            hpVal = Number($(this).find("input").val())
+            maxHp = Number($(this).attr("max-pv"))
+            if(hpVal > maxHp) doNext = false;
+        })
+        $("#results div.ch").each(function(){
+            if (doNext) {
                 hpVal = $(this).find("input").val()
-                id = $(this).find("input").attr("id").substring(7)
                 maxHp = $(this).attr("max-pv")
-                if(hpVal) {
-                    console.log("hp: " + hpVal + " id: " + id + " maxHp: " + maxHp)
-                    if (hpVal <= maxHp) {
-                        $(this).attr("disabled", true);
+                if($(this).attr("id").substring(0, 2) == "pg"){
+                    //pg
+                    id = $(this).find("input").attr("id").substring(7)
+                    if(hpVal) {
+                        console.log("hp: " + hpVal + " id: " + id + " maxHp: " + maxHp)
+                        $("#sendButton").attr("disabled", true);
                         $.ajax({
                             type: "POST",
                             url: "operationsAPI.php",
@@ -145,20 +151,15 @@ $(document).ready(function(){
                                 newHP: hpVal
                             }
                         })
+                        window.location = "gamepage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
                     } else {
-                        $("#errors").html("<p style='color: red'>I punti vita attuali non possono superare il massimo</p>")
+                        $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
                     }
                 } else {
-                    $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
-                }
-            } else {
-                //npc
-                hpVal = $(this).find("input").val()
-                id = $(this).find("input").attr("id").substring(8)
-                maxHp = $(this).attr("max-pv")
-                if(hpVal) {
-                    console.log("hp: " + hpVal + " id: " + id + " maxHp: " + maxHp)
-                    if (hpVal <= maxHp) {
+                    //npc
+                    id = $(this).find("input").attr("id").substring(8)
+                    if(hpVal) {
+                        console.log("hp: " + hpVal + " id: " + id + " maxHp: " + maxHp)
                         $("#sendButton").attr("disabled", true);
                         $.ajax({
                             type: "POST",
@@ -170,12 +171,13 @@ $(document).ready(function(){
                                 newHP: hpVal
                             }
                         })
+                        window.location = "gamepage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
                     } else {
-                        $("#errors").html("<p style='color: red'>I punti vita attuali non possono superare il massimo</p>")
-                    }
-                } else {
-                    $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
-                }                
+                        $("#errors").html("<p style='color: red'>Ci sono aree obbligatorie da riempire</p>")
+                    }          
+                }
+            } else {
+                $("#errors").html("<p style='color: red'>I punti vita attuali non possono superare il massimo</p>")
             }
         })
     })
