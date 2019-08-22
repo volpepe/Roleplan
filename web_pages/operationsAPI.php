@@ -272,7 +272,72 @@ switch ($_POST["operation"]) {
         $stmt->bind_param("iiii", $world, $area, $world, $area); $stmt->execute();
         $stmt->close();
         break;
+    
+    //M14
+    case 'addQuestCompleted':
+        $stmt = $conn->prepare("UPDATE partecipazioni 
+                                SET Terminata=true 
+                                WHERE Arco=? AND NumQuest=? AND Personaggio=?");
+        $stmt->bind_param("iii", $arc, $numquest, $pg);
+        $arc = $_POST["arc"];
+        $numquest = $_POST["numquest"];
+        $pg = $_POST["pg"];
+        $stmt->execute();
+        $stmt->close();
+        break;
 
+    //M15
+    case 'addArcCompleted':
+        $stmt = $conn->prepare("INSERT INTO completamenti(Arco, Personaggio) VALUES(?, ?)");
+        $stmt->bind_param("ii", $arc, $pg);
+        $arc = $_POST["arc"];
+        $pg = $_POST["pg"];
+        $stmt->execute();
+        $stmt->close();
+        break;
+    
+    //M16
+    case 'assignQuest':
+        $stmt = $conn->prepare("INSERT INTO partecipazioni(Arco, NumQuest, Personaggio, Terminata) VALUES(?, ?, ?, false)");
+        $stmt->bind_param("iii", $arc, $numquest, $pg);
+        $arc = $_POST["arc"];
+        $numquest = $_POST["numquest"];
+        $pg = $_POST["pg"];
+        $stmt->execute();
+        $stmt = $conn->prepare("UPDATE personaggi_giocanti SET PuntiExp = PuntiExp + ? WHERE IDPersonaggio = ?");
+        $stmt->bind_param("ii", $puntiexp, $pg);
+        $puntiexp = $_POST["puntiExp"];
+        $stmt->execute();
+        $stmt->close();
+        break;
+    
+    //M17: Visualizzazione del numero di Personaggi facente parte di una Razza
+    case 'checkRaces':
+        $stmt = $conn->prepare("SELECT r.NomeRazza, COUNT(pr.Razza) AS ConteggioRazza
+                                FROM  ( SELECT p.IDPersonaggio, p.Razza FROM personaggi_giocanti p
+                                        UNION
+                                        SELECT n.IDNPC, n.Razza FROM npc n) pr 
+                                JOIN razze r ON r.IDRazza = pr.Razza
+                                GROUP BY pr.Razza");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $array_result = array();
+        while($row = $result->fetch_assoc()) {
+            $array_result[$row["NomeRazza"]] = $row["ConteggioRazza"];
+        }
+        echo json_encode($array_result);
+        $stmt->close();
+        break;
+
+    //M18: Visualizzazione dei Personaggi ancora vivi in un’Area
+    /*SELECT ch.IDChar, ch.Type, ch.Nome, ch.NomeRazza 
+    FROM (SELECT pg.IDPersonaggio AS IDChar, pg.NomePersonaggio AS Nome, r.NomeRazza, pg.PuntiVitaAtt, 'pg' AS Type 
+            FROM Personaggi_Giocanti pg JOIN Razze r ON r.IDRazza = pg.Razza 
+            UNION
+            SELECT n.IDNPC AS IDChar, n.Nome, r.NomeRazza, n.PuntiVitaAtt, 'npc' AS Type 
+            FROM NPC n JOIN Razze r ON r.IDRazza = n.Razza) ch 
+    WHERE ch.PuntiVitaAtt > 0*/
+        
     //M19
     case 'updateHP':
         switch($_POST["typechar"]){
@@ -317,6 +382,5 @@ switch ($_POST["operation"]) {
 }
 
 //TODO: test E01 on quests
-//      test M13
 ?>
 
