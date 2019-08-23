@@ -329,15 +329,33 @@ switch ($_POST["operation"]) {
         $stmt->close();
         break;
 
-    //M18: Visualizzazione dei Personaggi ancora vivi in un’Area
-    /*SELECT ch.IDChar, ch.Type, ch.Nome, ch.NomeRazza 
-    FROM (SELECT pg.IDPersonaggio AS IDChar, pg.NomePersonaggio AS Nome, r.NomeRazza, pg.PuntiVitaAtt, 'pg' AS Type 
-            FROM Personaggi_Giocanti pg JOIN Razze r ON r.IDRazza = pg.Razza 
-            UNION
-            SELECT n.IDNPC AS IDChar, n.Nome, r.NomeRazza, n.PuntiVitaAtt, 'npc' AS Type 
-            FROM NPC n JOIN Razze r ON r.IDRazza = n.Razza) ch 
-    WHERE ch.PuntiVitaAtt > 0*/
-        
+    //M18
+    case 'aliveChars':
+        $stmt = $conn->prepare("SELECT ch.IDChar, ch.Type, ch.Nome, ch.NomeRazza 
+                                FROM (SELECT pg.IDPersonaggio AS IDChar, pg.NomePersonaggio AS Nome, r.NomeRazza, pg.PuntiVitaAtt, 'pg' AS Type 
+                                        FROM personaggi_giocanti pg JOIN razze r ON r.IDRazza = pg.Razza
+                                        WHERE pg.MondoPresenza = ?
+                                        AND pg.AreaPresenza = ?
+                                        UNION
+                                        SELECT n.IDNPC AS IDChar, n.Nome, r.NomeRazza, n.PuntiVitaAtt, 'npc' AS Type 
+                                        FROM npc n JOIN razze r ON r.IDRazza = n.Razza
+                                        WHERE n.MondoPresenza = ?
+                                        AND n.AreaPresenza = ?) ch 
+                                WHERE ch.PuntiVitaAtt > 0");
+        $stmt->bind_param("iiii", $world, $area, $world, $area);
+        $world = $_POST["world"];
+        $area = $_POST["area"];
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $array_result = array();
+        while($row = $result->fetch_assoc()) {
+           array_push($array_result, array( "Nome" => $row["Nome"],
+                                            "NomeRazza" => $row["NomeRazza"],
+                                            "Tipo" => $row["Type"]));
+        }
+        echo json_encode($array_result);
+        break;
+    
     //M19
     case 'updateHP':
         switch($_POST["typechar"]){
@@ -346,7 +364,6 @@ switch ($_POST["operation"]) {
                 $stmt->bind_param("ii", $pvAtt, $idnpc);
                 $idnpc = $_POST["idchar"];
                 $pvAtt = $_POST["newHP"];
-                $stmt->execute(); $stmt->close();
                 break;
 
             case 'pg':
@@ -354,11 +371,11 @@ switch ($_POST["operation"]) {
                 $stmt->bind_param("ii", $pvAtt, $idpg);
                 $idpg = $_POST["idchar"];
                 $pvAtt = $_POST["newHP"];
-                $stmt->execute(); $stmt->close();
                 break;
 
             default: break;
         }
+        $stmt->execute(); $stmt->close();
         break;
 
     //E01
