@@ -22,9 +22,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col mh-100"> 
-                <button id="market-button" class="shadow-lg align-middle rounded"><i class="fas fa-comments-dollar"></i> Mercato</button>
-            </div>
             <div class="col">
                 <button id="fight-button" class="shadow-lg align-middle rounded"><i class="fas fa-fist-raised"></i> Battaglia</button>
             </div>
@@ -52,13 +49,10 @@ $(document).ready(function(){
         window.location = "inventory.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
     })
     $("#quest-button").click(function(){
-        window.location = "questmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
+        window.location = "gamequestmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
     })
     $("#fight-button").click(function(){
         window.location = "fightpage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
-    })
-    $("#market-button").click(function(){
-        window.location = "marketpage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
     })
 })
 </script>
