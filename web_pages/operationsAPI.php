@@ -114,6 +114,16 @@ function print_PG_tabled_info($row) {
     echo "</ul>";
 }
 
+function add_obj_in_inv_pg($obj, $quant, $pg){
+    global $conn;
+    $stmt = $conn->prepare("INSERT INTO Inventari_PG(TipoOggetto, Personaggio, Quantita) 
+                            VALUES (?, ?, ?) 
+                            ON DUPLICATE KEY UPDATE Quantita = Quantita + ?");
+    $stmt->bind_param("iiii", $obj, $pg, $quant, $quant);
+    $stmt->execute();
+    $stmt->close();
+}
+
 function get_quest_num($arc){
     global $conn;
     $sql = "SELECT MAX(NumQuest) AS LastID FROM quest WHERE Arco = " . $arc;
@@ -233,6 +243,10 @@ switch ($_POST["operation"]) {
         $sql = "INSERT INTO Archi(NomeArco) VALUES ('" . $_POST["arc"] . "')";
         do_insert_query($sql);
         break;
+    
+    //M09 TODO
+
+    //M10 TODO
 
     //M11
     case 'removeItemFromArea':
@@ -275,13 +289,34 @@ switch ($_POST["operation"]) {
     
     //M14
     case 'addQuestCompleted':
+        $arc = $_POST["arc"];
+        $numquest = $_POST["numquest"];
+        $pg = $_POST["pg"];
         $stmt = $conn->prepare("UPDATE partecipazioni 
                                 SET Terminata=true 
                                 WHERE Arco=? AND NumQuest=? AND Personaggio=?");
         $stmt->bind_param("iii", $arc, $numquest, $pg);
-        $arc = $_POST["arc"];
-        $numquest = $_POST["numquest"];
-        $pg = $_POST["pg"];
+        $stmt->execute();
+        $stmt = $conn->prepare("SELECT r.TipoOggetto, r.Quantita
+                                FROM ricompense r
+                                WHERE r.Arco = ?
+                                AND r.NumQuest = ?");
+        $stmt->bind_param("ii", $arc, $numquest);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = $result->fetch_assoc()) {
+            add_obj_in_inv_pg($row["TipoOggetto"], $row["Quantita"], $pg);
+        }
+        $stmt = $conn->prepare("SELECT RicompensaExp FROM quest WHERE Arco=? AND NumQuest=?");
+        $stmt->bind_param("ii", $arc, $numquest);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $exp = $row["RicompensaExp"];
+        $stmt = $conn->prepare("UPDATE personaggi_giocanti
+                                SET PuntiExp = PuntiExp + " . $exp . "
+                                WHERE IDPersonaggio = ?");
+        $stmt->bind_param("i", $pg);
         $stmt->execute();
         $stmt->close();
         break;
@@ -311,7 +346,7 @@ switch ($_POST["operation"]) {
         $stmt->close();
         break;
     
-    //M17: Visualizzazione del numero di Personaggi facente parte di una Razza
+    //M17
     case 'checkRaces':
         $stmt = $conn->prepare("SELECT r.NomeRazza, COUNT(pr.Razza) AS ConteggioRazza
                                 FROM  ( SELECT p.IDPersonaggio, p.Razza FROM personaggi_giocanti p
@@ -393,11 +428,13 @@ switch ($_POST["operation"]) {
         }
         break;
     
+    //E02 TODO
+
+    //E03 TODO
+    
     default:
         echo "no operation";
         break;
 }
-
-//TODO: test E01 on quests
 ?>
 
