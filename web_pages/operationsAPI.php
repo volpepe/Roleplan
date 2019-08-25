@@ -339,10 +339,6 @@ switch ($_POST["operation"]) {
         $numquest = $_POST["numquest"];
         $pg = $_POST["pg"];
         $stmt->execute();
-        $stmt = $conn->prepare("UPDATE personaggi_giocanti SET PuntiExp = PuntiExp + ? WHERE IDPersonaggio = ?");
-        $stmt->bind_param("ii", $puntiexp, $pg);
-        $puntiexp = $_POST["puntiExp"];
-        $stmt->execute();
         $stmt->close();
         break;
     

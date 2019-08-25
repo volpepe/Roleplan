@@ -23,10 +23,10 @@
         </div>
         <div class="row">
             <div class="col mh-100"> 
-                <button id="quest-button" class="shadow-lg align-middle rounded"><i class="fas fa-globe"></i> Inserisci Quest</button>
+                <button id="quest-button" class="shadow-lg align-middle rounded"><i class="fas fa-question-circle"></i> Inserisci Quest</button>
             </div>
             <div class="col">
-                <button id="arc-button" class="shadow-lg align-middle rounded"><i class="fas fa-user-cog"></i> Inserisci Arco</button>
+                <button id="arc-button" class="shadow-lg align-middle rounded"><i class="fas fa-folder-plus"></i> Inserisci Arco</button>
             </div>
         </div>
     </div>
