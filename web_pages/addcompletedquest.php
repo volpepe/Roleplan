@@ -66,6 +66,10 @@ if ($conn->connect_error) {
                     ?>
                     </select>
                 </div>
+                <div class="form-group custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="complarc">
+                    <label class="custom-control-label" for="complarc">Arco Completato</label>
+                </div>
                 <div id="errors"></div>
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
                 <button class="btn btn-danger dec" id="removeButton">Annulla</button>
@@ -87,6 +91,7 @@ $(document).ready(function(){
         arc=$("#quest option:selected").attr("arco")
         numquest=$("#quest option:selected").attr("numquest")
         pg=$("#pg").val()
+        complarc = $("#complarc").is(":checked")
         $(this).attr("disabled", true);
         $.ajax({
             type: "POST",
@@ -97,10 +102,20 @@ $(document).ready(function(){
                 numquest: numquest,
                 pg: pg
             }
-        }).done(function(data){
-            window.location = "gamequestmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
-            alert("Operation completed succesfully!" + data)
         })
+        if (complarc){
+            $.ajax({
+                type: "POST",
+                url: "operationsAPI.php",
+                data: {
+                    operation: "addArcCompleted",
+                    arc: arc,
+                    pg: pg
+                }
+            })
+        }
+        alert("Operation completed succesfully!")
+        window.location = "gamequestmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
     })
 })
 </script>
