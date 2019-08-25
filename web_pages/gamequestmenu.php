@@ -23,10 +23,10 @@
         </div>
         <div class="row">
             <div class="col mh-100"> 
-                <button id="assign-button" class="shadow-lg align-middle rounded"><i class="fas fa-tasks"></i> Assegna Quest</button>
+                <button id="assign-button" class="shadow-lg align-middle rounded"><i class="far fa-list-alt"></i> Assegna Quest</button>
             </div>
             <div class="col">
-                <button id="quest-button" class="shadow-lg align-middle rounded"><i class="fas fa-search-dollar"></i> Inserisci completamento Quest</button>
+                <button id="quest-button" class="shadow-lg align-middle rounded"><i class="fas fa-folder-plus"></i> Inserisci completamento Quest</button>
             </div>
         </div>
     </div>
