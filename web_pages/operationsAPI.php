@@ -249,7 +249,6 @@ switch ($_POST["operation"]) {
         $objtype = $_POST["objtype"];
         $charid = $_POST["charid"];
         $quant = $_POST["quant"];
-        $stmt;
         switch($_POST["type"]) {
             case 'npc':
                 $stmt = $conn->prepare("INSERT INTO inventari_npc(TipoOggetto, NPC, Quantita) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Quantita = Quantita + ?");
@@ -306,6 +305,7 @@ switch ($_POST["operation"]) {
         }
         $stmt->bind_param("ii", $objtype, $charid);
         $stmt->execute();
+        $stmt->close();
         break;
 
     //M11
