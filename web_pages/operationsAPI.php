@@ -244,9 +244,69 @@ switch ($_POST["operation"]) {
         do_insert_query($sql);
         break;
     
-    //M09 TODO
+    //M09
+    case 'addObjInInventory':
+        $objtype = $_POST["objtype"];
+        $charid = $_POST["charid"];
+        $quant = $_POST["quant"];
+        $stmt;
+        switch($_POST["type"]) {
+            case 'npc':
+                $stmt = $conn->prepare("INSERT INTO inventari_npc(TipoOggetto, NPC, Quantita) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE Quantita = Quantita + ?");
+                $stmt->bind_param("iiii", $objtype, $charid, $quant, $quant);
+                $stmt->execute();
+                $stmt->close();
+                break;
+            case 'pg':
+                add_obj_in_inv_pg($objtype, $quant, $pg);
+                break;
+        }
+        break;
 
-    //M10 TODO
+    //M10
+    case 'removeObjFromInventory':
+        switch($_POST["type"]) {
+            case 'npc':
+                $stmt = $conn->prepare("SELECT Quantita FROM inventari_npc WHERE TipoOggetto= ? AND NPC = ?");
+                break;
+            case 'pg':
+                $stmt = $conn->prepare("SELECT Quantita FROM inventari_npc WHERE TipoOggetto= ? AND Personaggio = ?");
+                break;
+        }
+        $stmt->bind_param("ii", $objtype, $charid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $quant_present = $row["Quantita"];
+        $quant_final = $quant_present - $_POST["quant"];
+        if($quant_final > 0){
+            switch($_POST["type"]) {
+                case 'npc': 
+                    $stmt = $conn->prepare("UPDATE inventari_npc
+                                            SET Quantita = " . $quant_final . "
+                                            WHERE TipoOggetto = ?
+                                            AND NPC = ?");
+                    break;
+                case 'pg':
+                    $stmt = $conn->prepare("UPDATE inventari_pg
+                                            SET Quantita = " . $quant_final . "
+                                            WHERE TipoOggetto = ?
+                                            AND Personaggio = ?");
+                    break;
+            }
+        } else {
+            switch($_POST["type"]) {
+                case 'npc': 
+                    $stmt = $conn->prepare("DELETE FROM inventari_npc WHERE TipoOggetto= ? AND NPC = ?");
+                    break;
+                case 'pg':
+                    $stmt = $conn->prepare("DELETE FROM inventari_pg WHERE TipoOggetto= ? AND Personaggio = ?");
+                    break;
+            }
+        }
+        $stmt->bind_param("ii", $objtype, $charid);
+        $stmt->execute();
+        break;
 
     //M11
     case 'removeItemFromArea':
@@ -257,7 +317,7 @@ switch ($_POST["operation"]) {
 
     //M12
     case 'addInterest':
-        $sql = "INSERT INTO Interessi_Acquisto(TipoOggetto, NPC, PrezzoAcquisto) 
+        $sql = "INSERT INTO interessi_acquisto(TipoOggetto, NPC, PrezzoAcquisto) 
                 VALUES (" . $_POST["obj"] . ", " .$_POST["NPC"] . ", ". $_POST["price"] . ") 
                 ON DUPLICATE KEY UPDATE PrezzoAcquisto=" . $_POST["price"];
         do_insert_query($sql);

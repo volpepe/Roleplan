@@ -108,7 +108,7 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
 $(document).ready(function(){
     $("#removeButton").click(function(e){
         e.preventDefault();
-        window.location = "worldmenu.php";
+        window.location = "gamepage.php";
     })
     $("#nomechar").html($("#char option:selected").attr("name"))
     $("#char").change(function(){
