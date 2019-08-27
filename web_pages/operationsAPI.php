@@ -114,6 +114,27 @@ function print_PG_tabled_info($row) {
     echo "</ul>";
 }
 
+function get_inventory($char_type, $char_id){
+    global $conn;
+    switch($char_type) {
+        case 'npc':
+            $stmt = $conn->prepare("SELECT t.Nome, i.Quantita FROM inventari_npc i, tipi_oggetto t WHERE NPC = ? AND i.TipoOggetto = t.IDTipoOgg");
+            break;
+
+        case 'pg':
+            $stmt = $conn->prepare("SELECT t.Nome, i.Quantita FROM inventari_pg i, tipi_oggetto t WHERE Personaggio = ? AND i.TipoOggetto = t.IDTipoOgg");
+            break;
+    }
+    $stmt->bind_param("i", $char_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $array_result = array();
+    while($row = $result->fetch_assoc()) {
+        $array_result[$row["Nome"]] = $row["Quantita"];
+    }
+    echo json_encode($array_result);
+}
+
 function add_obj_in_inv_pg($obj, $quant, $pg){
     global $conn;
     $stmt = $conn->prepare("INSERT INTO Inventari_PG(TipoOggetto, Personaggio, Quantita) 
@@ -244,6 +265,10 @@ switch ($_POST["operation"]) {
         do_insert_query($sql);
         break;
     
+    case 'getInv':
+        get_inventory($_POST["type"], $_POST["charid"]);
+        break;
+    
     //M09
     case 'addObjInInventory':
         $objtype = $_POST["objtype"];
@@ -260,10 +285,15 @@ switch ($_POST["operation"]) {
                 add_obj_in_inv_pg($objtype, $quant, $pg);
                 break;
         }
+        //M09 and M10 functions return the inventory of a charachter
+        get_inventory($_POST["type"], $charid);
         break;
 
     //M10
     case 'removeObjFromInventory':
+        $objtype = $_POST["objtype"];
+        $charid = $_POST["charid"];
+        $quant = $_POST["quant"];
         switch($_POST["type"]) {
             case 'npc':
                 $stmt = $conn->prepare("SELECT Quantita FROM inventari_npc WHERE TipoOggetto= ? AND NPC = ?");
@@ -277,7 +307,7 @@ switch ($_POST["operation"]) {
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         $quant_present = $row["Quantita"];
-        $quant_final = $quant_present - $_POST["quant"];
+        $quant_final = $quant_present - $quant;
         if($quant_final > 0){
             switch($_POST["type"]) {
                 case 'npc': 
@@ -306,6 +336,7 @@ switch ($_POST["operation"]) {
         $stmt->bind_param("ii", $objtype, $charid);
         $stmt->execute();
         $stmt->close();
+        get_inventory($_POST["type"], $charid);
         break;
 
     //M11

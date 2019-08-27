@@ -70,32 +70,38 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
                     }
                 ?>
                 </select>
+                <label for="quant">Quantità: </label>
+                <input type="number" name="quant" id="quant" class="form-control">
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
                 <button class="btn btn-danger dec" id="removeButton">Annulla</button>
                 <h3>Inventario di <span id="nomechar"></span></h3>
                 <table class="table-striped" style="width:100%">
-                    <tr class="header">
-                        <th style="width:60%">Nome Oggetto</th>
-                        <th>Quantità</th>
-                        <th></th>
-                    </tr>
-                <?php
-                /*
-                //first initialization of the table
-                $sql = "SELECT t.Nome, o.IDOggetto
-                        FROM tipi_oggetto t, oggetti o 
-                        WHERE o.MondoPresenza = " . $_GET["WORLD"] . "
-                        AND o.AreaPresenza = " . $_GET["AREA"] . "
-                        AND o.TipoOggetto = t.IDTipoOgg";
-                $result = $conn->query($sql);
-                while ($row = $result->fetch_assoc()){
-                    echo "<tr id=" . $row["IDOggetto"] . ">
-                            <td class='first'>" . $row["Nome"] . "</td>
-                            <td></td>
-                            <td><button class='nostyle deleteobj'>Elimina Oggetto</button></td>
-                        </tr>";
-                }*/
-                ?>
+                    <thead>
+                        <tr class="header">
+                            <th style="width:60%">Nome Oggetto</th>
+                            <th>Quantità</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    /*
+                    //first initialization of the table
+                    $sql = "SELECT t.Nome, o.IDOggetto
+                            FROM tipi_oggetto t, oggetti o 
+                            WHERE o.MondoPresenza = " . $_GET["WORLD"] . "
+                            AND o.AreaPresenza = " . $_GET["AREA"] . "
+                            AND o.TipoOggetto = t.IDTipoOgg";
+                    $result = $conn->query($sql);
+                    while ($row = $result->fetch_assoc()){
+                        echo "<tr id=" . $row["IDOggetto"] . ">
+                                <td class='first'>" . $row["Nome"] . "</td>
+                                <td></td>
+                                <td><button class='nostyle deleteobj'>Elimina Oggetto</button></td>
+                            </tr>";
+                    }*/
+                    ?>
+                    </tbody>
                 </table>
             </div>
         </form>  
@@ -106,34 +112,51 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
 
 <script>
 $(document).ready(function(){
+
+    //initialization:
+    $("#nomechar").html($("#char option:selected").attr("name"))
+
     $("#removeButton").click(function(e){
         e.preventDefault();
         window.location = "gamepage.php";
     })
-    $("#nomechar").html($("#char option:selected").attr("name"))
+
     $("#char").change(function(){
         $("#nomechar").html($("#char option:selected").attr("name"))
-        buildInventory()
+        $.ajax({
+            type: "POST",
+            url: "operationsAPI.php",
+            data: {
+                operation: "getInv",
+                charid: $("#char").val(),
+                type: $("#char option:selected").attr("type")
+            }
+        }).done(function(inv){
+            buildInventory(inv)
+        })
     })
+
     $("#sendButton").click(function(e){
         e.preventDefault();
         $.ajax({
             type: "POST",
             url: "operationsAPI.php",
             data: {
-                operation: "addItemInArea",
+                operation: "addObjInInventory",
                 objType: $("#addobj").val(),
-                world: <?php echo $_GET["WORLD"]; ?>,
-                area: <?php echo $_GET["AREA"]; ?>
+                charid: $("#char").val(),
+                quant: 1,
+                type: $("#char option:selected").attr("type")
             }
-        }).done(function(data){
-            //add quantità
-            $("table tr.header").after("<tr id=" + data + "><td class='first'>" + $("#addobj :selected").text() + "</td><td><button class='nostyle deleteobj'>Elimina Oggetto</button></td></tr>")
+        }).done(function(inv){
+            buildInventory(inv)
         })
     })
+
     $("table ").on("click", "button", function(e){
         e.preventDefault();
         id = $(this).parent().parent().attr("id")
+        console.log(id)
         /*$.ajax({
             type: "POST",
             url: "operationsAPI.php",
@@ -145,6 +168,33 @@ $(document).ready(function(){
             $("#" + id).remove()
         })*/
     })
+
+    //inventory initialization
+    $.ajax({
+            type: "POST",
+            url: "operationsAPI.php",
+            data: {
+                operation: "getInv",
+                charid: $("#char").val(),
+                type: $("#char option:selected").attr("type")
+            }
+    }).done(function(inv){
+        buildInventory(inv)
+    })
+
+    function buildInventory(inv){
+        var inv = JSON.parse(inv)
+        console.log(inv)
+        objNames = Object.keys(inv)
+        counter = 0
+        $("table tbody").empty()
+        for(var i = 0; i < objNames.length; i++){
+            var txt = "<tr id=" + counter + "><td class='first'>" + objNames[i] + "</td><td>" + inv[objNames[i]] + "</td><td><button class='nostyle deleteobj'>Elimina Oggetto</button></td></tr>"
+            counter++
+            $("table tbody").append(txt);
+        }
+    }
+
 })
 </script>
 
