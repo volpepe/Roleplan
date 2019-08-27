@@ -301,7 +301,7 @@ switch ($_POST["operation"]) {
                 $stmt = $conn->prepare("SELECT Quantita FROM inventari_npc WHERE TipoOggetto= ? AND NPC = ?");
                 break;
             case 'pg':
-                $stmt = $conn->prepare("SELECT Quantita FROM inventari_npc WHERE TipoOggetto= ? AND Personaggio = ?");
+                $stmt = $conn->prepare("SELECT Quantita FROM inventari_pg WHERE TipoOggetto= ? AND Personaggio = ?");
                 break;
         }
         $stmt->bind_param("ii", $objtype, $charid);

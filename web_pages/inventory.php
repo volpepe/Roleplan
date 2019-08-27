@@ -140,8 +140,7 @@ $(document).ready(function(){
     $("table").on("click", "button", function(e){
         e.preventDefault()
         id = $(this).parent().parent().attr("id")
-        console.log(id)
-        var objtype = (this).parent().parent().attr("id-obj")
+        var objtype = $(this).parent().parent().attr("id-obj")
         var type = $("#char option:selected").attr("type")
         var charid = $("#char").val()
         var quant = 1
@@ -156,6 +155,7 @@ $(document).ready(function(){
                 quant: quant
             }                
         }).done(function(inv){
+            console.log(inv)
             buildInventory(inv)
         })
     })
