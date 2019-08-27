@@ -137,7 +137,7 @@ $(document).ready(function(){
         })
     })
 
-    $("table tbody .deleteobj").on("click", "button", function(e){
+    $("table").on("click", "button", function(e){
         e.preventDefault()
         id = $(this).parent().parent().attr("id")
         console.log(id)
