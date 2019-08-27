@@ -282,7 +282,7 @@ switch ($_POST["operation"]) {
                 $stmt->close();
                 break;
             case 'pg':
-                add_obj_in_inv_pg($objtype, $quant, $pg);
+                add_obj_in_inv_pg($objtype, $quant, $charid);
                 break;
         }
         //M09 and M10 functions return the inventory of a charachter

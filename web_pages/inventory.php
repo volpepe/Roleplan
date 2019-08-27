@@ -84,23 +84,6 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
-                    /*
-                    //first initialization of the table
-                    $sql = "SELECT t.Nome, o.IDOggetto
-                            FROM tipi_oggetto t, oggetti o 
-                            WHERE o.MondoPresenza = " . $_GET["WORLD"] . "
-                            AND o.AreaPresenza = " . $_GET["AREA"] . "
-                            AND o.TipoOggetto = t.IDTipoOgg";
-                    $result = $conn->query($sql);
-                    while ($row = $result->fetch_assoc()){
-                        echo "<tr id=" . $row["IDOggetto"] . ">
-                                <td class='first'>" . $row["Nome"] . "</td>
-                                <td></td>
-                                <td><button class='nostyle deleteobj'>Elimina Oggetto</button></td>
-                            </tr>";
-                    }*/
-                    ?>
                     </tbody>
                 </table>
             </div>
@@ -143,12 +126,13 @@ $(document).ready(function(){
             url: "operationsAPI.php",
             data: {
                 operation: "addObjInInventory",
-                objType: $("#addobj").val(),
+                objtype: $("#addobj").val(),
                 charid: $("#char").val(),
-                quant: 1,
+                quant: $("#quant").val(),
                 type: $("#char option:selected").attr("type")
             }
         }).done(function(inv){
+            console.log(inv)
             buildInventory(inv)
         })
     })
