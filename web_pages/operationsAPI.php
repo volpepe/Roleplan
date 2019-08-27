@@ -118,11 +118,11 @@ function get_inventory($char_type, $char_id){
     global $conn;
     switch($char_type) {
         case 'npc':
-            $stmt = $conn->prepare("SELECT t.Nome, i.Quantita FROM inventari_npc i, tipi_oggetto t WHERE NPC = ? AND i.TipoOggetto = t.IDTipoOgg");
+            $stmt = $conn->prepare("SELECT t.Nome, i.TipoOggetto, i.Quantita FROM inventari_npc i, tipi_oggetto t WHERE NPC = ? AND i.TipoOggetto = t.IDTipoOgg");
             break;
 
         case 'pg':
-            $stmt = $conn->prepare("SELECT t.Nome, i.Quantita FROM inventari_pg i, tipi_oggetto t WHERE Personaggio = ? AND i.TipoOggetto = t.IDTipoOgg");
+            $stmt = $conn->prepare("SELECT t.Nome, i.TipoOggetto, i.Quantita FROM inventari_pg i, tipi_oggetto t WHERE Personaggio = ? AND i.TipoOggetto = t.IDTipoOgg");
             break;
     }
     $stmt->bind_param("i", $char_id);
@@ -130,7 +130,9 @@ function get_inventory($char_type, $char_id){
     $result = $stmt->get_result();
     $array_result = array();
     while($row = $result->fetch_assoc()) {
-        $array_result[$row["Nome"]] = $row["Quantita"];
+        array_push($array_result, array(    "NomeOggetto" => $row["Nome"],
+                                            "IDOggetto" => $row["TipoOggetto"],
+                                            "Quantita" => $row["Quantita"]));
     }
     echo json_encode($array_result);
 }

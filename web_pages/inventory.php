@@ -71,7 +71,7 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
                 ?>
                 </select>
                 <label for="quant">Quantità: </label>
-                <input type="number" name="quant" id="quant" class="form-control">
+                <input min=1 value=1 type="number" name="quant" id="quant" class="form-control">
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
                 <button class="btn btn-danger dec" id="removeButton">Annulla</button>
                 <h3>Inventario di <span id="nomechar"></span></h3>
@@ -87,7 +87,7 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
                     </tbody>
                 </table>
             </div>
-        </form>  
+        </form>
     </div>
 </body>
 
@@ -101,7 +101,7 @@ $(document).ready(function(){
 
     $("#removeButton").click(function(e){
         e.preventDefault();
-        window.location = "gamepage.php";
+        window.location = "gamepage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
     })
 
     $("#char").change(function(){
@@ -137,20 +137,27 @@ $(document).ready(function(){
         })
     })
 
-    $("table ").on("click", "button", function(e){
-        e.preventDefault();
+    $("table tbody .deleteobj").on("click", "button", function(e){
+        e.preventDefault()
         id = $(this).parent().parent().attr("id")
         console.log(id)
-        /*$.ajax({
+        var objtype = (this).parent().parent().attr("id-obj")
+        var type = $("#char option:selected").attr("type")
+        var charid = $("#char").val()
+        var quant = 1
+        $.ajax({
             type: "POST",
             url: "operationsAPI.php",
             data: {
-                operation: "removeItemFromArea",
-                id: id
+                operation: "removeObjFromInventory",
+                objtype: objtype,
+                type: type,
+                charid: charid,
+                quant: quant
             }                
-        }).done(function(){
-            $("#" + id).remove()
-        })*/
+        }).done(function(inv){
+            buildInventory(inv)
+        })
     })
 
     //inventory initialization
@@ -169,16 +176,13 @@ $(document).ready(function(){
     function buildInventory(inv){
         var inv = JSON.parse(inv)
         console.log(inv)
-        objNames = Object.keys(inv)
         counter = 0
         $("table tbody").empty()
-        for(var i = 0; i < objNames.length; i++){
-            var txt = "<tr id=" + counter + "><td class='first'>" + objNames[i] + "</td><td>" + inv[objNames[i]] + "</td><td><button class='nostyle deleteobj'>Elimina Oggetto</button></td></tr>"
-            counter++
+        for(var i in inv){
+            var txt = "<tr id=" + counter++ + " id-obj=" + inv[i]["IDOggetto"] + "><td class='first'>" + inv[i]["NomeOggetto"] + "</td><td>" + inv[i]["Quantita"] + "</td><td><button class='nostyle deleteobj'>Elimina 1 unità</button></td></tr>"
             $("table tbody").append(txt);
         }
     }
-
 })
 </script>
 
