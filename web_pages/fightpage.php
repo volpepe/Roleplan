@@ -99,7 +99,7 @@ if ($conn->connect_error) {
 $(document).ready(function(){
     $("#removeButton").click(function(e){
         e.preventDefault();
-        window.location = "gamepage.php";
+        window.location = "gamepage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
     })
     $(".pg-select").change(function(){
         var idpg = $(this).val()

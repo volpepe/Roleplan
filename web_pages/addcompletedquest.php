@@ -84,7 +84,7 @@ if ($conn->connect_error) {
 $(document).ready(function(){
     $("#removeButton").click(function(e){
         e.preventDefault();
-        window.location = "gamequestmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
+        window.location = "gamepage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
     })
     $("#sendButton").click(function(e){
         e.preventDefault();
@@ -115,7 +115,7 @@ $(document).ready(function(){
             })
         }
         alert("Operation completed succesfully!")
-        window.location = "gamequestmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
+        window.location = "gamepage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
     })
 })
 </script>
