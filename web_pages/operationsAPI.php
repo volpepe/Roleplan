@@ -526,7 +526,28 @@ switch ($_POST["operation"]) {
         }
         break;
     
-    //E02 TODO
+    //E02
+    case 'searchJob':
+    $stmt = $conn->prepare("SELECT l.NomeLavoro, n.Nome AS NPCLavoratore, cam.NomeArea AS AreaLavoro
+                            FROM occupazioni o, (SELECT * FROM aree a WHERE a.Mondo = ? AND a.CentroAbitato = true) cam, lavori l, npc n 
+                            WHERE o.Mondo = ?
+                            AND o.Area = cam.IDArea 
+                            AND l.IDLavoro = o.Lavoro 
+                            AND o.NPC = n.IDNPC
+                            AND o.Lavoro = ?");
+    $stmt->bind_param("iii", $world, $world, $work);
+    $work = $_POST["work"];
+    $world = $_POST["world"];
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $array_result = array();
+    while($row = $result->fetch_assoc()) {
+        array_push($array_result, array( "NomeLavoro" => $row["NomeLavoro"],
+                                        "NPCLavoratore" => $row["NPCLavoratore"],
+                                        "AreaLavoro" => $row["AreaLavoro"]));
+    }
+    echo json_encode($array_result);
+    break;
 
     //E03 TODO
     
