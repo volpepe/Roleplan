@@ -1,0 +1,14 @@
+.jumbotron{
+    width: 100%;
+    margin-bottom: 10%;
+    overflow: auto;
+    padding: 20px;
+}
+
+button:hover{
+    font-size: 32px !important;
+}
+
+#confirmchars:hover{
+    font-size: 20px !important;
+}

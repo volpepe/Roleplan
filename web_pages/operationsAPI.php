@@ -515,11 +515,10 @@ switch ($_POST["operation"]) {
     //E01
     case 'viewPG':
         $sql = "SELECT p.IDPersonaggio, p.NomePersonaggio, p.Livello, p.PuntiVitaMax, p.PuntiVitaAtt, p.PuntiExp, a.NomeArea, r.NomeRazza 
-                FROM personaggi_giocanti p, razze r, aree a 
-                WHERE p.NomeGiocatore='" . $_POST["name"] . "' 
-                AND p.MondoPresenza = ". $_POST["world"] . "
-                AND p.AreaPresenza = a.IDArea
-                AND p.Razza = r.IDRazza";
+                FROM personaggi_giocanti p, razze r, (SELECT * FROM aree WHERE Mondo = ".$_POST["world"].") a 
+                WHERE p.NomeGiocatore= '".$conn->escape_string($_POST["name"])."'
+                AND p.Razza = r.IDRazza
+                AND a.IDArea = p.AreaPresenza";
         $result = $conn->query($sql);
         while($row = $result->fetch_assoc()){
             //for each charachter
