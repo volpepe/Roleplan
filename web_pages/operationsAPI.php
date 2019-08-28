@@ -502,6 +502,16 @@ switch ($_POST["operation"]) {
         $stmt->execute(); $stmt->close();
         break;
 
+    //M20
+    case 'changePGLocation':
+        $stmt = $conn->prepare("UPDATE personaggi_giocanti SET MondoPresenza = ?, AreaPresenza = ? WHERE IDPersonaggio = ?");
+        $stmt->bind_param("iii", $world, $area, $idpg);
+        $idpg = $_POST["idpg"];
+        $world = $_POST["world"];
+        $area = $_POST["area"];
+        $stmt->execute(); $stmt->close();
+        break;
+
     //E01
     case 'viewPG':
         $sql = "SELECT p.IDPersonaggio, p.NomePersonaggio, p.Livello, p.PuntiVitaMax, p.PuntiVitaAtt, p.PuntiExp, a.NomeArea, r.NomeRazza 
