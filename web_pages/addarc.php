@@ -45,7 +45,7 @@ if ($conn->connect_error) {
                 </div>
                 <div id="errors"></div>
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
-                <button class="btn btn-danger dec" id="removeButton">Annulla</button>
+                <button class="btn btn-danger dec" id="removeButton">Indietro</button>
             </div>
         </form>  
     </div>

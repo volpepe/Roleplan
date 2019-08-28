@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>RolePlan: Game Mode Page</title>
+    <title>RolePlan: Inventory Menu Page</title>
 </head>
 
 <body>
@@ -23,16 +23,10 @@
         </div>
         <div class="row">
             <div class="col">
-                <button id="fight-button" class="shadow-lg align-middle rounded"><i class="fas fa-fist-raised"></i> Battaglia</button>
+                <button id="pickup-button" class="shadow-lg align-middle rounded"><i class="fas fa-fist-raised"></i> Raccolta da terra</button>
             </div>
             <div class="col">
-                <button id="quest-button" class="shadow-lg align-middle rounded"><i class="fas fa-book"></i> Quest</button>
-            </div>
-            <div class="col">
-                <button id="inventory-button" class="shadow-lg align-middle rounded"><i class="fas fa-object-group"></i> Inventari</button>
-            </div>
-            <div class="col">
-                <button id="area-button" class="shadow-lg align-middle rounded"><i class="fas fa-globe-europe"></i> Cambio Area di Gioco</button>
+                <button id="inv-button" class="shadow-lg align-middle rounded"><i class="fas fa-book"></i> Modifica Inventario</button>
             </div>
         </div>
     </div>
@@ -42,17 +36,11 @@
 
 <script>
 $(document).ready(function(){
-    $("#area-button").click(function(){
-        window.location = "worldchoose.php?callback=areachoose.php&final_callback=gamepage.php"
+    $("#pickup-button").click(function(){
+        window.location = "pickupitem.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
     })
-    $("#inventory-button").click(function(){
-        window.location = "inventorymenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
-    })
-    $("#quest-button").click(function(){
-        window.location = "gamequestmenu.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
-    })
-    $("#fight-button").click(function(){
-        window.location = "fightpage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
+    $("#inv-button").click(function(){
+        window.location = "inventory.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>"
     })
 })
 </script>

@@ -57,7 +57,7 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
                 ?>
                 </select>
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
-                <button class="btn btn-danger dec" id="removeButton">Annulla</button>
+                <button class="btn btn-danger dec" id="removeButton">Indietro</button>
                 <table class="table-striped" style="width:100%">
                     <tr class="header">
                         <th style="width:80%">Nome Oggetto</th>

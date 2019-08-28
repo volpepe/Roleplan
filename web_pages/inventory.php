@@ -73,7 +73,7 @@ if(!isset($_GET["WORLD"]) || !isset($_GET["AREA"])){
                 <label for="quant">Quantità: </label>
                 <input min=1 value=1 type="number" name="quant" id="quant" class="form-control">
                 <button class="btn btn-primary dec" id="sendButton">Conferma</button>
-                <button class="btn btn-danger dec" id="removeButton">Annulla</button>
+                <button class="btn btn-danger dec" id="removeButton">Indietro</button>
                 <h3>Inventario di <span id="nomechar"></span></h3>
                 <table class="table-striped" style="width:100%">
                     <thead>
