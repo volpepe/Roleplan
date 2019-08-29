@@ -96,9 +96,10 @@ $(document).ready(function(){
                 world:<?php echo $_GET["WORLD"];?>,
                 area:<?php echo $_GET["AREA"];?>
             }
+            }).done(function(){
+                location.reload()
             })
         }
-        location.reload()
     })
 })
 </script>
