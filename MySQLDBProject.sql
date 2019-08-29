@@ -316,9 +316,22 @@ CREATE TABLE Eliminazioni_Necessarie(
 
 -- valori di prova per iniziare
 
-INSERT INTO mondi(NomeMondo) VALUES ('Terra di Mezzo'), ('Summer Fields');
+INSERT INTO mondi(IDMondo, NomeMondo) VALUES (1, 'Terra di Mezzo'), (2, 'Summer Fields');
+INSERT INTO aree(Mondo, IDArea, NomeArea, Descrizione, CentroAbitato) VALUES    (1, 0, "Pianura Verde", "Una distesa pianeggiante con nemici di livello basso", false),
+                                                                                (1, 1, "Bosco di Sommerlund", "Un bosco paludoso", false),
+                                                                                (1, 2, "Castello di Garreth", "Il castello del nobile conte Garreth", false),
+                                                                                (2, 0, "Castello di Berner, Piano 1", "Primo piano del castello di Berner", false);
 INSERT INTO razze(NomeRazza) VALUES ('Umano'), ('Elfo Scuro');
-INSERT INTO tipi_aree(NomeTipo, Descrizione, EffettiAggiuntivi) VALUES ("Palude", "Un terreno impervio ricoperto di acquitrini e fanghiglie", "Rallenta di molto i personaggi bassi. Può provocare veleno (1d6 ogni turno: 6 = veleno)."), ("Montagna", "Un terreno ricoperto di neve e ricco di rocce.", "Rallenta di molto i personaggi bassi. Può causare problemi di congelamento.");
-INSERT INTO tipi_oggetto(Nome,Peso,Descrizione,CategoriaOggetto) VALUES    ('Pozione di Ripristino Semplice', 0.1, 'Una semplice pozione che ripristina 30HP', 'pozione'),
-                                                                           ('Salvia Rossa', 0.01, 'Un ingrediente per creare pozioni', 'ingrediente'),
-                                                                           ('Succo di Pomodoro', 0.01, 'Un ingrediente per creare pozioni', 'ingrediente')
+INSERT INTO tipi_aree(IDTipoArea, NomeTipo, Descrizione, EffettiAggiuntivi) VALUES (0, "Palude", "Un terreno impervio ricoperto di acquitrini e fanghiglie", "Rallenta di molto i personaggi bassi. Può provocare veleno (1d6 ogni turno: 6 = veleno)."), (1, "Montagna", "Un terreno ricoperto di neve e ricco di rocce.", "Rallenta di molto i personaggi bassi. Può causare problemi di congelamento."), (2, "Interno", "Un luogo al riparo dalle condizioni climatiche - ma non dai nemici che possono nascondersi dietro ogni angolo", "Non ci sono effetti particolari");
+INSERT INTO class_aree(TipoArea, Mondo, Area) VALUES (0, 1, 0), (0, 1, 1), (2, 1, 2), (2, 2, 0);
+INSERT INTO tipi_oggetto(IDTipoOgg, Nome,Peso,Descrizione,CategoriaOggetto) VALUES   (0, 'Pozione di Ripristino Semplice', 0.1, 'Una semplice pozione che ripristina 30HP', 'pozione'),
+                                                                                     (1, 'Salvia Rossa', 0.01, 'Un ingrediente per creare pozioni', 'ingrediente'),
+                                                                                     (2, 'Succo di Pomodoro', 0.01, 'Un ingrediente per creare pozioni', 'ingrediente'),
+                                                                                     (3, 'Succo di Rosa Rossa', 0.01, 'Estratto da una rosa rossa', 'ingrediente');
+INSERT INTO tipi_pianta (IDTipoPianta, Nome, Descrizione) VALUES (1, 'Rosa Rossa', 'Una semplice rosa rossa'), (2, 'Pomodoro', 'Un semplice pomodoro');
+INSERT INTO decomposizioni (TipoOggetto, TipoPianta) VALUES (3, 1), (2, 2); 
+INSERT INTO piante (MondoPresenza, AreaPresenza, TipoPianta) VALUES (1, 0, 1), (1, 0, 2);
+INSERT INTO ricette (IDRicetta, OggettoCreato) VALUES (0, 0);
+INSERT INTO parte_di(TipoOggetto, Ricetta, Quantita) VALUES (3, 0, 2), (2, 0, 3);
+INSERT INTO personaggi_giocanti (IDPersonaggio, NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) VALUES (1, 'Torinn', 1, 12, 12, 0, 'Volpe', 1, 0, 1), (2, 'Tharassol', 1, 15, 13, 23, 'Volpe', 1, 0, 2), (3, 'Tharivol', 1, 15, 13, 23, 'Marco', 1, 0, 2);
+
