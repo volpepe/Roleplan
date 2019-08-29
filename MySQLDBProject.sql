@@ -334,4 +334,9 @@ INSERT INTO piante (MondoPresenza, AreaPresenza, TipoPianta) VALUES (1, 0, 1), (
 INSERT INTO ricette (IDRicetta, OggettoCreato) VALUES (0, 0);
 INSERT INTO parte_di(TipoOggetto, Ricetta, Quantita) VALUES (3, 0, 2), (2, 0, 3);
 INSERT INTO personaggi_giocanti (IDPersonaggio, NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) VALUES (1, 'Torinn', 1, 12, 12, 0, 'Volpe', 1, 0, 1), (2, 'Tharassol', 1, 15, 13, 23, 'Volpe', 1, 0, 2), (3, 'Tharivol', 1, 15, 13, 23, 'Marco', 1, 0, 2);
+INSERT INTO lavori (NomeLavoro) VALUES ('Oste'), ('Carpentiere'), ('Cacciatore'), ('Druido');
+INSERT INTO npc (IDNPC, Nome, Livello, PuntiVitaMax, PuntiVitaAtt, MondoPresenza, AreaPresenza, Razza) VALUES (1, 'Gianluca', 6, 39, 20, 1, 0, 1),
+                                                                                                              (2, 'Marco', 2, 12, 13, 1, 0, 1),
+                                                                                                              (3, 'Carlo', 2, 15, 19, 1, 0, 1)
+
 
