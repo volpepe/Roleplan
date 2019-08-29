@@ -330,7 +330,7 @@ INSERT INTO tipi_oggetto(IDTipoOgg, Nome,Peso,Descrizione,CategoriaOggetto) VALU
                                                                                      (3, 'Succo di Rosa Rossa', 0.01, 'Estratto da una rosa rossa', 'ingrediente');
 INSERT INTO tipi_pianta (IDTipoPianta, Nome, Descrizione) VALUES (1, 'Rosa Rossa', 'Una semplice rosa rossa'), (2, 'Pomodoro', 'Un semplice pomodoro');
 INSERT INTO decomposizioni (TipoOggetto, TipoPianta) VALUES (3, 1), (2, 2); 
-INSERT INTO piante (MondoPresenza, AreaPresenza, TipoPianta) VALUES (1, 0, 1), (1, 0, 2);
+INSERT INTO piante (MondoPresenza, AreaPresenza, TipoPianta) VALUES (1, 0, 1), (1, 0, 2), (1, 3, 2);
 INSERT INTO ricette (IDRicetta, OggettoCreato) VALUES (0, 0);
 INSERT INTO parte_di(TipoOggetto, Ricetta, Quantita) VALUES (3, 0, 2), (2, 0, 3);
 INSERT INTO personaggi_giocanti (IDPersonaggio, NomePersonaggio, Livello, PuntiVitaMax, PuntiVitaAtt, PuntiExp, NomeGiocatore, MondoPresenza, AreaPresenza, Razza) VALUES (1, 'Torinn', 1, 12, 12, 0, 'Volpe', 1, 0, 1), (2, 'Tharassol', 1, 15, 13, 23, 'Volpe', 1, 0, 2), (3, 'Tharivol', 1, 15, 13, 23, 'Marco', 1, 0, 2);

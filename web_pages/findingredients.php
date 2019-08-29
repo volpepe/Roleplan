@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 if(!isset($_GET["WORLD"])){
-    echo "Non si può cercare un lavoro senza indicare il mondo in cui deve essere cercato.";
+    echo "Non si possono cercare gli ingredienti senza indicare il mondo in cui devono essere cercati.";
 } else {
 ?>
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ if(!isset($_GET["WORLD"])){
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <title>RolePlan: Job Finding Page</title>
+    <title>RolePlan: Ingredients Finding Page</title>
 </head>
 <body>
     <div class="container-fluid">
@@ -42,17 +42,14 @@ if(!isset($_GET["WORLD"])){
         </div>
         <form>
             <div class="container">
-                <label for="job">Lavoro da cercare: </label>
-                <select name="job" id="job" class="custom-select form-control">
+                <label for="recipe">Ricetta da utilizzare nella ricerca: </label>
+                <select name="recipe" id="recipe" class="custom-select form-control">
                 <?php
-                    $sql = "SELECT * FROM lavori";
+                    $sql = "SELECT r.IDRicetta, o.Nome FROM ricette r JOIN tipi_oggetto o ON r.OggettoCreato = o.IDTipoOgg";
                     $result=mysqli_query($conn, $sql);
-                    $first = true;
                     while ($row = mysqli_fetch_assoc($result))
                     {
-                        $text = $first?"selected":"";
-                        echo "<option value='" . $row["IDLavoro"] . "' " . $text . ">" . $row["NomeLavoro"] . "</option>";
-                        $first=false;
+                        echo "<option value='" . $row["IDRicetta"] . "' > Ricetta per " . $row["Nome"] . "</option>";
                     }
                 ?>
                 </select>
@@ -62,7 +59,7 @@ if(!isset($_GET["WORLD"])){
                 <thead>
                     <tr class="header">
                         <th style="width:50%">Area</th>
-                        <th>NPC Lavoratore</th>
+                        <th>Pianta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,16 +84,17 @@ $(document).ready(function(){
             type: "POST",
             url: "operationsAPI.php",
             data: {
-                operation: "searchJob",
-                work: $("#job").val(),
+                operation: "searchRecipePlant",
+                recipe: $("#recipe").val(),
                 world: <?php echo $_GET["WORLD"]; ?>,
             }
-        }).done(function(jobs){
-            jobs = JSON.parse(jobs)
+        }).done(function(plants){
+            console.log(plants)
+            plants = JSON.parse(plants)
             $("table tbody").empty()
-            console.log(jobs)
-            for (var i = 0; i < jobs.length; i++){
-                $("table tbody").append("<tr><td>" + jobs[i]["AreaLavoro"] + "</td><td>" + jobs[i]["NPCLavoratore"] + "</td></tr>")
+            console.log(plants)
+            for (var i = 0; i < plants.length; i++){
+                $("table tbody").append("<tr><td>" + plants[i]["NomeArea"] + "</td><td>" + plants[i]["NomePianta"] + "</td></tr>")
             }
         })
     })

@@ -547,19 +547,20 @@ switch ($_POST["operation"]) {
                                             "AreaLavoro" => $row["AreaLavoro"]));
         }
         echo json_encode($array_result);
+        $stmt->close();
         break;
 
     //E03
     case 'searchRecipePlant':
-        $stmt = $conn->prepare("SELECT a.NomeArea, piante_ricetta.Nome
+        $stmt = $conn->prepare("SELECT a.NomeArea, piante_ricetta.Nome AS NomePianta
                                 FROM (	SELECT p.Nome, p.IDTipoPianta
                                         FROM (       SELECT r.OggettoCreato, o.IDTipoOgg, o.Nome, d.Quantita
-                                                     FROM Ricette r, Tipi_Oggetto o, Parte_Di d
+                                                     FROM ricette r, tipi_oggetto o, parte_Di d
                                                      WHERE r.IDRicetta = d.Ricetta
                                                      AND o.IDTipoOgg = d.TipoOggetto
-                                                     AND r.IDRicetta = ?) ingredienti, Decomposizioni decom, Tipi_Pianta
+                                                     AND r.IDRicetta = ?) ingredienti, decomposizioni decom, tipi_pianta p
                                         WHERE ingredienti.IDTipoOgg = decom.TipoOggetto
-                                        AND decom.TipoPianta = p.IDTipoPianta) piante_ricetta, Aree a, Piante pt
+                                        AND decom.TipoPianta = p.IDTipoPianta) piante_ricetta, aree a, piante pt
                                 WHERE pt.MondoPresenza = ?
                                 AND a.Mondo = ?
                                 AND piante_ricetta.IDTipoPianta = pt.TipoPianta
@@ -572,9 +573,10 @@ switch ($_POST["operation"]) {
         $array_result = array();
         while($row = $result->fetch_assoc()) {
             array_push($array_result, array(    "NomeArea" => $row["NomeArea"],
-                                                "Nome" => $row["Nome"]));
+                                                "NomePianta" => $row["NomePianta"]));
         }
         echo json_encode($array_result);
+        $stmt->close();
         break;
     
     default:
