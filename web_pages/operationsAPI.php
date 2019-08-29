@@ -528,28 +528,54 @@ switch ($_POST["operation"]) {
     
     //E02
     case 'searchJob':
-    $stmt = $conn->prepare("SELECT l.NomeLavoro, n.Nome AS NPCLavoratore, cam.NomeArea AS AreaLavoro
-                            FROM occupazioni o, (SELECT * FROM aree a WHERE a.Mondo = ? AND a.CentroAbitato = true) cam, lavori l, npc n 
-                            WHERE o.Mondo = ?
-                            AND o.Area = cam.IDArea 
-                            AND l.IDLavoro = o.Lavoro 
-                            AND o.NPC = n.IDNPC
-                            AND o.Lavoro = ?");
-    $stmt->bind_param("iii", $world, $world, $work);
-    $work = $_POST["work"];
-    $world = $_POST["world"];
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $array_result = array();
-    while($row = $result->fetch_assoc()) {
-        array_push($array_result, array( "NomeLavoro" => $row["NomeLavoro"],
-                                        "NPCLavoratore" => $row["NPCLavoratore"],
-                                        "AreaLavoro" => $row["AreaLavoro"]));
-    }
-    echo json_encode($array_result);
-    break;
+        $stmt = $conn->prepare("SELECT l.NomeLavoro, n.Nome AS NPCLavoratore, cam.NomeArea AS AreaLavoro
+                                FROM occupazioni o, (SELECT * FROM aree a WHERE a.Mondo = ? AND a.CentroAbitato = true) cam, lavori l, npc n 
+                                WHERE o.Mondo = ?
+                                AND o.Area = cam.IDArea 
+                                AND l.IDLavoro = o.Lavoro 
+                                AND o.NPC = n.IDNPC
+                                AND o.Lavoro = ?");
+        $stmt->bind_param("iii", $world, $world, $work);
+        $work = $_POST["work"];
+        $world = $_POST["world"];
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $array_result = array();
+        while($row = $result->fetch_assoc()) {
+            array_push($array_result, array( "NomeLavoro" => $row["NomeLavoro"],
+                                            "NPCLavoratore" => $row["NPCLavoratore"],
+                                            "AreaLavoro" => $row["AreaLavoro"]));
+        }
+        echo json_encode($array_result);
+        break;
 
-    //E03 TODO
+    //E03
+    case 'searchRecipePlant':
+        $stmt = $conn->prepare("SELECT a.NomeArea, piante_ricetta.Nome
+                                FROM (	SELECT p.Nome, p.IDTipoPianta
+                                        FROM (       SELECT r.OggettoCreato, o.IDTipoOgg, o.Nome, d.Quantita
+                                                     FROM Ricette r, Tipi_Oggetto o, Parte_Di d
+                                                     WHERE r.IDRicetta = d.Ricetta
+                                                     AND o.IDTipoOgg = d.TipoOggetto
+                                                     AND r.IDRicetta = ?) ingredienti, Decomposizioni decom, Tipi_Pianta
+                                        WHERE ingredienti.IDTipoOgg = decom.TipoOggetto
+                                        AND decom.TipoPianta = p.IDTipoPianta) piante_ricetta, Aree a, Piante pt
+                                WHERE pt.MondoPresenza = ?
+                                AND a.Mondo = ?
+                                AND piante_ricetta.IDTipoPianta = pt.TipoPianta
+                                AND pt.AreaPresenza = a.IDArea");
+        $stmt->bind_param("iii", $recipe, $world, $world);
+        $recipe = $_POST["recipe"];
+        $world = $_POST["world"];
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $array_result = array();
+        while($row = $result->fetch_assoc()) {
+            array_push($array_result, array(    "NomeArea" => $row["NomeArea"],
+                                                "Nome" => $row["Nome"]));
+        }
+        echo json_encode($array_result);
+        break;
     
     default:
         echo "no operation";
