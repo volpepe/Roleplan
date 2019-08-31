@@ -84,7 +84,7 @@ function print_PG_tabled_info($row) {
     $result = $conn->query($sql);
     if ($result != FALSE){  
         $pesoTot = $result->fetch_assoc();
-        echo '<th style="text-align:right; padding: 10px;" colspan=2>Peso totale trasportato: '. $pesoTot["PesoTrasportato"] . '</th>';
+        echo '<th style="text-align:right; padding: 10px;" colspan=2>Peso totale trasportato: '. bcdiv($pesoTot["PesoTrasportato"], 1, 2) . '</th>';
     } else {
         echo '<th style="text-align:right; padding: 10px;" colspan=2>Peso totale trasportato: 0.00 </th>';
     }
