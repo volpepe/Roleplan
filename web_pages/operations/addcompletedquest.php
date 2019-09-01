@@ -56,14 +56,6 @@ if ($conn->connect_error) {
                 <div class="form-group">
                     <label for="quest">Quest completata: </label>
                     <select name="quest" id="quest" class="custom-select">
-                    <?php
-                        $sql = "SELECT Arco, NumQuest, RicompensaExp, Nome FROM quest";
-                        $result = mysqli_query($conn, $sql);
-                        while ($row = mysqli_fetch_assoc($result))
-                        {
-                            echo "<option arco=" . $row["Arco"] . " numquest=" . $row["NumQuest"] . " ricompensa=" . $row["RicompensaExp"] . ">" . $row["Nome"] . "</option>";
-                        }
-                    ?>
                     </select>
                 </div>
                 <div class="form-group custom-control custom-switch">
@@ -86,6 +78,31 @@ $(document).ready(function(){
         e.preventDefault();
         window.location = "../menus/gamepage.php?WORLD=<?php echo $_GET["WORLD"];?>&AREA=<?php echo $_GET["AREA"];?>";
     })
+
+    $("#pg").change(function(){
+        getAssignedQuests()
+    })
+
+    getAssignedQuests();
+
+    function getAssignedQuests(){
+        $.ajax({
+            type: "POST",
+            url: "../API/operationsAPI.php",
+            data: {
+                operation: "getAssignedQuests",
+                pg: $("#pg").val()
+            }
+        }).done(function(quests){
+            var quests = JSON.parse(quests)
+            counter = 0
+            $("#quest").empty()
+            for(var i in quests){
+                $("#quest").append("<option arco=" + quests[i]["Arco"] + " numquest=" + quests[i]["NumQuest"] + " ricompensa=" + quests[i]["RicompensaExp"] + ">" + quests[i]["NomeQuest"] + "</option>")
+            }
+        })
+    }
+
     $("#sendButton").click(function(e){
         e.preventDefault();
         arc=$("#quest option:selected").attr("arco")

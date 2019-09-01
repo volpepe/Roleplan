@@ -270,6 +270,27 @@ switch ($_POST["operation"]) {
     case 'getInv':
         get_inventory($_POST["type"], $_POST["charid"]);
         break;
+
+    case 'getAssignedQuests':
+        $stmt = $conn->prepare("SELECT p.Arco, p.NumQuest, q.RicompensaExp, q.Nome 
+                                FROM partecipazioni p, quest q 
+                                WHERE q.Arco = p.Arco 
+                                AND q.NumQuest = p.NumQuest 
+                                AND p.Personaggio = ?
+                                AND p.Terminata = False");
+        $stmt->bind_param("i", $_POST["pg"]);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $array_result = array();
+        while($row = $result->fetch_assoc()) {
+            array_push($array_result, array(    "Arco" => $row["Arco"],
+                                                "NumQuest" => $row["NumQuest"],
+                                                "RicompensaExp" => $row["RicompensaExp"],
+                                                "NomeQuest" => $row["Nome"]));
+        }
+        echo json_encode($array_result);
+        $stmt->close();
+        break;
     
     //M09
     case 'addObjInInventory':
